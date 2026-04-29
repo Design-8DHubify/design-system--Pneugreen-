@@ -1,0 +1,1531 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PneuGreen — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css"/>
+<style>
+:root{
+  --cp:#009933;--cpd:#006622;--cpl:#00cc44;--cps:#f0faf4;
+  --cfd:#0f0f0f;--cfm:#393939;--cfl:#616161;--cfmu:#888888;
+  --chb:#1e1e1e;--cnb:#2a2a2a;--cfb:#0f0f0f;
+  --cw:#ffffff;--cbp:#f8f9fa;--cbc:#f7f7f7;--ctb:#f0f0f0;
+  --cb:#e0e0e0;--cib:#eeeeee;
+  --ff:'Nunito',sans-serif;--r:8px;--rl:16px;--sw:260px;--tr:.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--cbp);color:var(--cfd);display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--chb);color:#fff;overflow-y:auto;z-index:100;display:flex;flex-direction:column;border-right:1px solid rgba(0,153,51,.2)}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--cp);border-radius:4px}
+.sidebar-logo{padding:20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
+.sidebar-logo img{height:30px;object-fit:contain}
+.sidebar-logo-text .name{font-size:14px;font-weight:900;color:var(--cp)}.sidebar-logo-text .sub{font-size:10px;color:var(--cfmu);text-transform:uppercase;letter-spacing:1px}
+.sidebar-nav{padding:12px 0;flex:1}
+.nav-group-title{font-size:10px;font-weight:700;color:var(--cfmu);text-transform:uppercase;letter-spacing:1.5px;padding:10px 20px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);text-decoration:none;cursor:pointer;transition:var(--tr);border-left:3px solid transparent}
+.nav-link i{font-size:13px;width:16px;text-align:center}
+.nav-link:hover,.nav-link.active{color:#fff;background:rgba(0,153,51,.12);border-left-color:var(--cp)}
+.sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:10px;color:var(--cfmu);line-height:1.6}
+.main{margin-left:var(--sw);flex:1;min-height:100vh}
+.section{padding:52px 44px;border-bottom:1px solid var(--cb)}
+.section:last-child{border-bottom:none}
+.section-header{margin-bottom:32px}
+.section-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--cp);text-transform:uppercase;letter-spacing:1.5px;background:var(--cps);border:1px solid rgba(0,153,51,.2);padding:3px 11px;border-radius:20px;margin-bottom:9px}
+.section-title{font-size:24px;font-weight:900;color:var(--cfd);line-height:1.2}
+.section-desc{font-size:13px;color:var(--cfl);margin-top:6px;max-width:580px;line-height:1.7}
+.hero-banner{background:var(--chb);padding:52px 44px;border-bottom:2px solid var(--cp)}
+.hero-banner .badge{display:inline-block;background:var(--cp);color:#fff;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.hero-banner h1{font-size:clamp(24px,3.5vw,42px);font-weight:900;color:#fff;line-height:1.15;max-width:560px}
+.hero-banner h1 span{color:var(--cp)}
+.hero-banner p{color:rgba(255,255,255,.55);font-size:14px;margin-top:9px;max-width:460px;line-height:1.7}
+.hero-meta{display:flex;gap:18px;margin-top:24px;flex-wrap:wrap}
+.hero-meta-item{font-size:11px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:5px}
+.hero-meta-item strong{color:var(--cp);font-weight:700}
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.color-card{border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform var(--tr),box-shadow var(--tr);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.color-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.color-swatch{height:64px;position:relative}.color-swatch-sm{height:46px}
+.color-info{padding:8px 10px;background:#fff;border:1px solid var(--cb);border-top:none}
+.color-info .hex{font-size:11px;font-weight:700;font-family:monospace;color:var(--cfd)}
+.color-info .name{font-size:10px;color:var(--cfmu);margin-top:1px}
+.color-copy-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);opacity:0;transition:var(--tr);font-size:11px;color:#fff;font-weight:600;gap:4px}
+.color-card:hover .color-copy-hint{opacity:1}
+.color-group-title{font-size:11px;font-weight:700;color:var(--cfl);margin:22px 0 10px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--cb);padding-bottom:6px}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--cfd);color:#fff;padding:10px 16px;border-radius:var(--r);font-size:12px;font-weight:600;z-index:9999;display:flex;align-items:center;gap:7px;transform:translateY(80px);opacity:0;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--cp)}
+.type-scale{display:flex;flex-direction:column}
+.type-row{display:grid;grid-template-columns:68px 1fr 170px;align-items:center;gap:18px;padding:16px 0;border-bottom:1px solid var(--cb)}
+.type-row:last-child{border-bottom:none}
+.type-label{font-size:10px;font-weight:700;color:var(--cfmu);text-transform:uppercase;letter-spacing:1px}
+.type-meta{font-size:10px;color:var(--cfmu);text-align:right}
+.logo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.logo-card{border-radius:var(--r);overflow:hidden;border:1px solid var(--cb)}
+.logo-card-bg{padding:32px;display:flex;align-items:center;justify-content:center;min-height:100px}
+.logo-card-bg.dark{background:var(--chb)}.logo-card-bg.light{background:#fff}.logo-card-bg.green{background:var(--cp)}
+.logo-card-info{padding:9px 12px;background:#fff;border-top:1px solid var(--cb)}
+.logo-card-info p{font-size:10px;color:var(--cfmu)}
+.logo-card img{max-width:100%;max-height:50px;object-fit:contain}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r);font-family:var(--ff);font-size:12px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all var(--tr);text-decoration:none;white-space:nowrap;line-height:1}
+.btn-sm{padding:6px 13px;font-size:11px}.btn-lg{padding:12px 26px;font-size:14px}.btn-pill{border-radius:50px}
+.btn-primary{background:var(--cp);color:#fff;border-color:var(--cp)}.btn-primary:hover{background:var(--cpd);border-color:var(--cpd)}
+.btn-secondary{background:transparent;color:var(--cp);border-color:var(--cp)}.btn-secondary:hover{background:var(--cps)}
+.btn-dark{background:var(--cfd);color:#fff;border-color:var(--cfd)}.btn-dark:hover{background:#222}
+.btn-ghost{background:transparent;color:var(--cfm);border-color:var(--cb)}.btn-ghost:hover{border-color:var(--cp);color:var(--cp)}
+.btn:disabled,.btn-disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.form-group{margin-bottom:16px;max-width:320px}
+.form-label{display:block;font-size:11px;font-weight:700;color:var(--cfm);margin-bottom:5px}
+.form-input{width:100%;padding:9px 12px;border:2px solid var(--cib);border-radius:var(--r);font-family:var(--ff);font-size:12px;color:var(--cfd);background:#fff;transition:border-color var(--tr);outline:none}
+.form-input:focus{border-color:var(--cp)}
+.form-input.search{padding-left:36px}
+.input-wrap{position:relative}.input-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--cfmu);font-size:14px}
+select.form-input{cursor:pointer}
+textarea.form-input{resize:vertical;min-height:80px}
+.form-checks{display:flex;flex-direction:column;gap:8px}
+.form-check{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--cfm)}
+.form-check input{accent-color:var(--cp);width:14px;height:14px;cursor:pointer}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.badge-primary{background:var(--cp);color:#fff}.badge-outline{background:transparent;color:var(--cp);border:1.5px solid var(--cp)}
+.badge-tag{background:var(--ctb);color:var(--cfm);font-size:10px}.badge-tag::before{content:'#'}
+.badge-meta{background:rgba(0,153,51,.1);color:var(--cpd);border:1px solid rgba(0,153,51,.2)}
+.badge-dark{background:var(--cfd);color:#fff}
+.alert{display:flex;align-items:flex-start;gap:10px;padding:12px 15px;border-radius:var(--r);font-size:12px;margin-bottom:9px;line-height:1.5}
+.alert i{font-size:16px;margin-top:1px;flex-shrink:0}
+.alert-success{background:#f0faf4;border:1px solid #b3dfc0;color:#1a6b35}.alert-success i{color:var(--cp)}
+.alert-info{background:#f0f6ff;border:1px solid #b3cfff;color:#1a3d8f}.alert-info i{color:#4a80f0}
+.alert-warning{background:#fffbf0;border:1px solid #ffe4a0;color:#7a5500}.alert-warning i{color:#f0a500}
+.alert-error{background:#fff0f0;border:1px solid #ffb3b3;color:#8f1a1a}.alert-error i{color:#e03030}
+.cards-demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.ds-card{background:#fff;border-radius:var(--rl);border:1px solid var(--cb);overflow:hidden;transition:box-shadow var(--tr),transform var(--tr)}
+.ds-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-3px)}
+.ds-card-img{height:120px;background:linear-gradient(135deg,var(--cps),rgba(0,204,68,.12));display:flex;align-items:center;justify-content:center;position:relative}
+.ds-card-img i{font-size:40px;color:var(--cp)}
+.ds-card-img .card-badge{position:absolute;top:9px;left:9px}
+.ds-card-body{padding:16px}.ds-card-body h4{font-size:13px;font-weight:800;color:var(--cfd);margin-bottom:4px}
+.ds-card-body p{font-size:11px;color:var(--cfl);line-height:1.6}
+.ds-card-footer{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid var(--cb)}
+.ds-card-footer .meta{font-size:10px;color:var(--cfmu);display:flex;align-items:center;gap:3px}
+.accordion{border:1px solid var(--cb);border-radius:var(--r);overflow:hidden}
+.accordion-item{border-bottom:1px solid var(--cb)}.accordion-item:last-child{border-bottom:none}
+.accordion-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:#fff;border:none;font-family:var(--ff);font-size:12px;font-weight:700;color:var(--cfd);cursor:pointer;text-align:left;transition:background var(--tr)}
+.accordion-trigger:hover,.accordion-trigger.open{background:var(--cps);color:var(--cp)}
+.accordion-icon{font-size:12px;transition:transform .3s;flex-shrink:0}
+.accordion-trigger.open .accordion-icon{transform:rotate(45deg)}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.accordion-body.open{max-height:400px}
+.accordion-body-inner{padding:4px 16px 16px;font-size:12px;color:var(--cfl);line-height:1.7}
+.tabs-nav{display:flex;border-bottom:2px solid var(--cb);margin-bottom:18px}
+.tab-btn{padding:9px 16px;font-family:var(--ff);font-size:12px;font-weight:700;color:var(--cfmu);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;transition:all var(--tr)}
+.tab-btn:hover{color:var(--cp)}.tab-btn.active{color:var(--cp);border-bottom-color:var(--cp)}
+.tab-panel{display:none;animation:fadeIn .3s}.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.tab-content-demo{padding:18px;background:var(--cps);border-radius:var(--r);font-size:12px;color:var(--cfm);line-height:1.7}
+.spacing-row{display:flex;align-items:center;gap:12px;margin-bottom:7px}
+.spacing-bar{height:16px;background:var(--cp);border-radius:3px;opacity:.7}
+.spacing-label{font-size:11px;font-weight:600;color:var(--cfm);min-width:64px}
+.spacing-value{font-size:10px;color:var(--cfmu);font-family:monospace}
+.grid-demo{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-top:12px}
+.grid-col{height:24px;border-radius:3px;background:rgba(0,153,51,.15);border:1px solid rgba(0,153,51,.25);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--cp)}
+.builder-layout{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start}
+.builder-panel{background:#fff;border:1px solid var(--cb);border-radius:var(--rl);padding:18px;position:sticky;top:20px}
+.builder-panel h3{font-size:13px;font-weight:800;margin-bottom:14px;color:var(--cfd)}
+.builder-field{margin-bottom:12px}
+.builder-field label{display:block;font-size:10px;font-weight:700;color:var(--cfmu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.builder-field input,.builder-field select,.builder-field textarea{width:100%;padding:7px 10px;border:2px solid var(--cib);border-radius:var(--r);font-family:var(--ff);font-size:11px;color:var(--cfd);outline:none;transition:border-color var(--tr)}
+.builder-field input:focus,.builder-field select:focus{border-color:var(--cp)}
+.builder-items-list{display:flex;flex-direction:column;gap:6px;margin-bottom:9px}
+.builder-item-row{background:var(--cbc);padding:8px 9px;border-radius:var(--r);border:1px solid var(--cb)}
+.builder-item-row input{width:100%;padding:4px 7px;border:1.5px solid var(--cb);border-radius:5px;font-size:11px;outline:none;margin-bottom:3px}
+.builder-item-row input:last-of-type{margin-bottom:0}
+.builder-item-row input:focus{border-color:var(--cp)}
+.btn-remove-item{background:none;border:none;cursor:pointer;color:var(--cfmu);font-size:13px;float:right;line-height:1;transition:color var(--tr);padding:2px}
+.btn-remove-item:hover{color:#e03030}
+.builder-preview{background:var(--cbc);border:1px solid var(--cb);border-radius:var(--rl);overflow:hidden}
+.preview-header{background:var(--chb);padding:9px 16px;display:flex;align-items:center;justify-content:space-between}
+.preview-header span{font-size:11px;font-weight:600;color:rgba(255,255,255,.45)}
+.preview-dots{display:flex;gap:5px}
+.preview-dot{width:8px;height:8px;border-radius:50%}
+.preview-body{padding:18px;min-height:160px}
+.preview-code-wrap{border-top:1px solid var(--cb)}
+.preview-code-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:var(--cnb)}
+.preview-code-header span{font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.8px}
+.preview-code{padding:16px;background:var(--chb);font-family:monospace;font-size:10px;color:#a8e6b5;line-height:1.7;overflow-x:auto;max-height:200px;white-space:pre}
+.icons-toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:18px;background:#fff;padding:12px;border-radius:var(--r);border:1px solid var(--cb)}
+.icons-toolbar label{font-size:11px;font-weight:700;color:var(--cfm);display:flex;align-items:center;gap:6px}
+.icons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px;max-height:460px;overflow-y:auto}
+.icon-card{background:#fff;border:1.5px solid var(--cb);border-radius:var(--r);padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all var(--tr)}
+.icon-card:hover,.icon-card.selected{border-color:var(--cp);background:var(--cps)}
+.icon-card i{font-size:20px}.icon-card span{font-size:8px;color:var(--cfmu);text-align:center;word-break:break-all;line-height:1.3}
+.templates-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.template-tab-btn{padding:6px 13px;border:2px solid var(--cb);border-radius:var(--r);font-size:11px;font-weight:700;background:#fff;cursor:pointer;color:var(--cfm);transition:all var(--tr);display:flex;align-items:center;gap:5px}
+.template-tab-btn.active,.template-tab-btn:hover{border-color:var(--cp);color:var(--cp);background:var(--cps)}
+.template-preview-wrap{background:var(--cbc);border:1px solid var(--cb);border-radius:var(--rl);overflow:hidden}
+.template-iframe-header{background:var(--chb);padding:8px 16px;display:flex;align-items:center;justify-content:space-between}
+.template-iframe-header span{font-size:10px;color:rgba(255,255,255,.35)}
+.template-iframe-header .dots{display:flex;gap:5px}
+.template-iframe-header .dot{width:8px;height:8px;border-radius:50%}
+.template-content{display:none}.template-content.active{display:block}
+.component-group{margin-bottom:32px}
+.component-label{font-size:11px;font-weight:700;color:var(--cfl);margin-bottom:12px;padding-bottom:6px;border-bottom:1px dashed var(--cb)}
+.demo-row{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.divider{height:1px;background:var(--cb);margin:24px 0}
+section[id],div[id^="sec-"]{scroll-margin-top:20px}
+.hamburger{display:none;position:fixed;top:11px;left:11px;z-index:200;background:var(--cp);border:none;width:36px;height:36px;border-radius:var(--r);align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:16px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}.overlay.show{display:block}
+@media(max-width:1024px){:root{--sw:220px}.section{padding:36px 22px}.builder-layout{grid-template-columns:1fr}}
+@media(max-width:768px){.sidebar{transform:translateX(-100%);transition:transform .3s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:flex}.section{padding:26px 14px}.hero-banner{padding:32px 14px}}
+/* LP */
+.lp{font-family:var(--ff);color:var(--cfd)}
+.lp-nav{background:var(--chb);padding:0 36px;display:flex;align-items:center;justify-content:space-between;height:60px;border-bottom:1px solid rgba(0,153,51,.15);position:sticky;top:0;z-index:50}
+.lp-nav img{height:32px;object-fit:contain}
+.lp-nav-links{display:flex;gap:22px}
+.lp-nav-links a{color:rgba(255,255,255,.6);font-size:12px;font-weight:600;text-decoration:none;transition:color .2s}
+.lp-nav-links a:hover{color:#fff}
+.lp-hero{background:linear-gradient(155deg,#061206,#0d2b0d 45%,#1a3d1a);padding:72px 40px;display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;min-height:520px;position:relative;overflow:hidden}
+.lp-hero::before{content:'';position:absolute;right:-100px;top:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,153,51,.15),transparent 70%);pointer-events:none}
+.lp-hero-img{border-radius:var(--rl);overflow:hidden;height:360px}
+.lp-hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.lp-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(0,153,51,.18);border:1px solid rgba(0,153,51,.4);color:var(--cpl);font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:13px}
+.lp-tag-dark{display:inline-flex;align-items:center;gap:5px;background:var(--cps);border:1px solid rgba(0,153,51,.2);color:var(--cp);font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.lp-hero h1{font-size:clamp(24px,3vw,40px);font-weight:900;color:#fff;line-height:1.2;margin-bottom:12px}
+.lp-hero h1 em{color:var(--cp);font-style:normal}
+.lp-hero p{color:rgba(255,255,255,.6);font-size:14px;line-height:1.8;margin-bottom:22px}
+.lp-btns{display:flex;gap:10px;flex-wrap:wrap}
+.lp-btn-p{display:inline-flex;align-items:center;gap:7px;background:var(--cp);color:#fff;padding:11px 22px;border-radius:var(--r);font-weight:700;font-size:13px;text-decoration:none}
+.lp-btn-p:hover{background:var(--cpd)}
+.lp-btn-s{display:inline-flex;align-items:center;gap:7px;background:transparent;color:rgba(255,255,255,.7);padding:11px 22px;border-radius:var(--r);font-weight:700;font-size:13px;text-decoration:none;border:2px solid rgba(255,255,255,.2)}
+.lp-hero-stats{display:flex;gap:22px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1)}
+.lp-stat .num{font-size:22px;font-weight:900;color:var(--cp)}
+.lp-stat .lbl{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+.lp-sec{padding:60px 40px}
+.lp-sec.light{background:#fff}.lp-sec.gray{background:var(--cbc)}.lp-sec.dark{background:linear-gradient(135deg,#061206,#0d2b0d)}
+.lp-h2{font-size:clamp(20px,2.5vw,28px);font-weight:900;color:var(--cfd);margin-bottom:7px}
+.lp-h2-inv{font-size:clamp(20px,2.5vw,28px);font-weight:900;color:#fff;margin-bottom:7px}
+.lp-sub{font-size:13px;color:var(--cfl);line-height:1.7;max-width:460px;margin-bottom:32px}
+.lp-sub-inv{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;max-width:460px;margin-bottom:32px}
+.lp-sec-center{text-align:center}
+.lp-sec-center .lp-sub,.lp-sec-center .lp-sub-inv{margin-left:auto;margin-right:auto}
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
+.benefit-card{padding:22px;border:1px solid var(--cb);border-radius:var(--rl);background:#fff;transition:box-shadow .2s,transform .2s}
+.benefit-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.07);transform:translateY(-3px)}
+.benefit-card .icon{width:44px;height:44px;background:var(--cps);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px;color:var(--cp)}
+.benefit-card h3{font-size:13px;font-weight:800;margin-bottom:5px}
+.benefit-card p{font-size:11px;color:var(--cfl);line-height:1.6}
+.lp-split{display:grid;grid-template-columns:1fr 1fr;min-height:420px}
+.lp-split-img{overflow:hidden}
+.lp-split-img img{width:100%;height:100%;object-fit:cover;display:block}
+.lp-split-content{background:var(--cfd);padding:56px 44px;display:flex;flex-direction:column;justify-content:center}
+.lp-checklist{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.lp-check{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,.72)}
+.lp-check i{color:var(--cp);flex-shrink:0;font-size:14px}
+.lp-brands{background:var(--cbc);padding:40px;text-align:center;border-top:1px solid var(--cb);border-bottom:1px solid var(--cb)}
+.lp-brands h3{font-size:10px;font-weight:700;color:var(--cfmu);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:6px}
+.lp-brands-row{display:flex;gap:28px;justify-content:center;align-items:center;flex-wrap:wrap}
+.lp-brand{font-size:16px;font-weight:900;color:var(--cfm);opacity:.35;letter-spacing:-.5px;transition:opacity .2s}
+.lp-brand:hover{opacity:.7}
+.how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0}
+.how-step{text-align:center;padding:0 18px;position:relative}
+.how-step:not(:last-child)::after{content:'';position:absolute;right:-1px;top:26px;width:2px;height:32px;background:linear-gradient(to bottom,var(--cp),transparent)}
+.step-num{width:52px;height:52px;border-radius:50%;background:var(--cp);color:#fff;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 13px}
+.how-step h3{font-size:13px;font-weight:800;margin-bottom:4px}
+.how-step p{font-size:11px;color:var(--cfl);line-height:1.6}
+.lp-fullphoto{position:relative;min-height:340px;overflow:hidden}
+.lp-fullphoto img{width:100%;height:340px;object-fit:cover;display:block}
+.lp-fullphoto-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.78),rgba(0,0,0,.18));display:flex;align-items:center;padding:0 56px}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:30px}
+.testimonial-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--rl);padding:20px}
+.stars{display:flex;gap:2px;margin-bottom:9px}
+.stars i{color:#f0a500;font-size:12px}
+.testimonial-card blockquote{font-size:12px;color:rgba(255,255,255,.62);line-height:1.7;margin-bottom:13px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:8px}
+.author-avatar{width:30px;height:30px;border-radius:50%;background:var(--cp);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.author-name{font-size:12px;font-weight:700;color:#fff}
+.author-role{font-size:10px;color:rgba(255,255,255,.3)}
+.lp-gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,200px);gap:10px;margin-top:26px}
+.lp-gallery-item{border-radius:var(--r);overflow:hidden}
+.lp-gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.lp-gallery-item:hover img{transform:scale(1.05)}
+.lp-gallery-item:first-child{grid-row:span 2}
+.lp-cta-sec{background:var(--cp);padding:60px 40px;text-align:center;position:relative;overflow:hidden}
+.lp-cta-sec::before{content:'';position:absolute;left:-80px;top:-80px;width:240px;height:240px;background:rgba(255,255,255,.07);border-radius:50%}
+.lp-cta-sec::after{content:'';position:absolute;right:-60px;bottom:-60px;width:200px;height:200px;background:rgba(0,0,0,.09);border-radius:50%}
+.lp-cta-sec h2{font-size:clamp(20px,3vw,32px);font-weight:900;color:#fff;margin-bottom:9px;position:relative;z-index:1}
+.lp-cta-sec p{font-size:13px;color:rgba(255,255,255,.72);max-width:440px;margin:0 auto 22px;line-height:1.7;position:relative;z-index:1}
+.lp-cta-form{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;max-width:480px;margin:0 auto}
+.lp-cta-form input{flex:1;min-width:180px;padding:10px 14px;border:2px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);border-radius:var(--r);font-family:var(--ff);font-size:13px;color:#fff;outline:none}
+.lp-cta-form input::placeholder{color:rgba(255,255,255,.44)}
+.lp-cta-form input:focus{border-color:rgba(255,255,255,.6)}
+.lp-footer{background:var(--cfb);padding:44px 40px 20px}
+.lp-footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+.lp-footer-brand img{height:30px;object-fit:contain;margin-bottom:11px}
+.lp-footer-brand p{font-size:11px;color:rgba(255,255,255,.3);line-height:1.7;max-width:200px}
+.lp-footer-col h4{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:11px}
+.lp-footer-col a{display:block;font-size:11px;color:rgba(255,255,255,.32);text-decoration:none;margin-bottom:7px;transition:color .2s}
+.lp-footer-col a:hover{color:var(--cp)}
+.lp-footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.lp-footer-bottom p{font-size:10px;color:rgba(255,255,255,.2)}
+.lp-footer-socials{display:flex;gap:7px}
+.lp-footer-socials a{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:12px;text-decoration:none;transition:all .2s}
+.lp-footer-socials a:hover{border-color:var(--cp);color:var(--cp)}
+@media(max-width:768px){
+  .lp-hero{grid-template-columns:1fr;min-height:auto}.lp-hero-img{height:200px}
+  .lp-split{grid-template-columns:1fr}
+  .lp-footer-top{grid-template-columns:1fr 1fr}
+  .lp-gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.lp-gallery-item:first-child{grid-row:auto}
+  .lp-nav{padding:0 14px}.lp-nav-links{display:none}
+  .lp-sec,.lp-footer,.lp-cta-sec{padding-left:20px;padding-right:20px}
+  .lp-fullphoto-overlay{padding:0 20px}
+}
+</style>
+</head>
+<body>
+<button class="hamburger" id="hamburgerBtn"><i class="fi fi-rs-bars-staggered"></i></button>
+<div class="overlay" id="sidebarOverlay"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_colorida_branca_e_verde.png" alt="PneuGreen" onerror="this.style.display='none'"/>
+    <!--<div class="sidebar-logo-text"><div class="name">PneuGreen</div><div class="sub">Design System v1.0</div></div>-->
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-title">Visao Geral</div>
+    <a class="nav-link active" data-target="sec-intro"><i class="fi fi-rs-home"></i> Inicio</a>
+    <div class="nav-group-title">Fundamentos</div>
+    <a class="nav-link" data-target="sec-cores"><i class="fi fi-rs-palette"></i> Cores</a>
+    <a class="nav-link" data-target="sec-tipografia"><i class="fi fi-rs-text"></i> Tipografia</a>
+    <a class="nav-link" data-target="sec-logos"><i class="fi fi-rs-picture"></i> Logos e Formas</a>
+    <div class="nav-group-title">Componentes</div>
+    <a class="nav-link" data-target="sec-botoes"><i class="fi fi-rs-cursor"></i> Botoes</a>
+    <a class="nav-link" data-target="sec-formularios"><i class="fi fi-rs-form"></i> Formularios</a>
+    <a class="nav-link" data-target="sec-badges"><i class="fi fi-rs-badge"></i> Badges e Tags</a>
+    <a class="nav-link" data-target="sec-alertas"><i class="fi fi-rs-bell"></i> Alertas</a>
+    <a class="nav-link" data-target="sec-cards"><i class="fi fi-rs-apps"></i> Cards</a>
+    <a class="nav-link" data-target="sec-accordion"><i class="fi fi-rs-list"></i> Accordion</a>
+    <a class="nav-link" data-target="sec-tabs"><i class="fi fi-rs-table-layout"></i> Tabs</a>
+    <a class="nav-link" data-target="sec-carousel"><i class="fi fi-rs-images"></i> Carrossel</a>
+    <div class="nav-group-title">Ferramentas</div>
+    <a class="nav-link" data-target="sec-builder"><i class="fi fi-rs-settings"></i> Builder RD Station</a>
+    <a class="nav-link" data-target="sec-icones"><i class="fi fi-rs-smile"></i> Icones</a>
+    <a class="nav-link" data-target="sec-templates"><i class="fi fi-rs-document"></i> Templates</a>
+    <div class="nav-group-title">Referencia</div>
+    <a class="nav-link" data-target="sec-espaco"><i class="fi fi-rs-grid"></i> Espacamento e Grid</a>
+  </nav>
+</aside>
+<main class="main">
+<!-- HERO BANNER -->
+<div class="hero-banner" id="sec-intro">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+    <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_branca_e_verde.png" alt="PneuGreen" style="height:38px;object-fit:contain" onerror="this.style.display='none'"/>
+  </div>
+  <div class="badge">Design System</div>
+  <h1>PneuGreen<br><span>Brand Guidelines</span></h1>
+  <p>Sistema de design extraido do codigo-fonte da PneuGreen. Cores, tipografia, componentes e padroes para o blog WordPress.</p>
+  <!--<div class="hero-meta">
+    <div class="hero-meta-item"><strong>Nunito</strong> Google Fonts</div>
+    <div class="hero-meta-item"><strong>Tailwind CSS</strong> v4</div>
+    <div class="hero-meta-item"><strong>React</strong> + Router</div>
+    <div class="hero-meta-item"><strong>12-col</strong> Grid</div>
+  </div>-->
+</div>
+
+<!-- CORES -->
+<section class="section" id="sec-cores">
+  <div class="section-header"><div class="section-tag">01 Fundamentos</div><h2 class="section-title">Paleta de Cores</h2><p class="section-desc">Clique em qualquer cor para copiar o codigo HEX.</p></div>
+  <div class="color-group-title">Cores Primarias</div>
+  <div class="color-grid">
+    <div class="color-card" onclick="copyColor('#009933','Verde Primario')"><div class="color-swatch" style="background:#009933"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i> Copiar</div></div><div class="color-info"><div class="hex">#009933</div><div class="name">Verde Primario</div></div></div>
+    <div class="color-card" onclick="copyColor('#006622','Verde Escuro')"><div class="color-swatch" style="background:#006622"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i> Copiar</div></div><div class="color-info"><div class="hex">#006622</div><div class="name">Verde Escuro</div></div></div>
+    <div class="color-card" onclick="copyColor('#00cc44','Verde Claro')"><div class="color-swatch" style="background:#00cc44"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i> Copiar</div></div><div class="color-info"><div class="hex">#00cc44</div><div class="name">Verde Claro</div></div></div>
+    <div class="color-card" onclick="copyColor('#f0faf4','Verde Suave')"><div class="color-swatch" style="background:#f0faf4;border:1px solid #d0edd8"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i> Copiar</div></div><div class="color-info"><div class="hex">#f0faf4</div><div class="name">Verde Suave</div></div></div>
+  </div>
+  <div class="color-group-title">Neutrals / UI</div>
+  <div class="color-grid">
+    <div class="color-card" onclick="copyColor('#0f0f0f','Texto Escuro')"><div class="color-swatch color-swatch-sm" style="background:#0f0f0f"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#0f0f0f</div><div class="name">Texto Escuro</div></div></div>
+    <div class="color-card" onclick="copyColor('#393939','Texto Medio')"><div class="color-swatch color-swatch-sm" style="background:#393939"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#393939</div><div class="name">Texto Medio</div></div></div>
+    <div class="color-card" onclick="copyColor('#616161','Texto Claro')"><div class="color-swatch color-swatch-sm" style="background:#616161"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#616161</div><div class="name">Texto Claro</div></div></div>
+    <div class="color-card" onclick="copyColor('#888888','Muted')"><div class="color-swatch color-swatch-sm" style="background:#888888"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#888888</div><div class="name">Muted</div></div></div>
+    <div class="color-card" onclick="copyColor('#1e1e1e','Header BG')"><div class="color-swatch color-swatch-sm" style="background:#1e1e1e"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#1e1e1e</div><div class="name">Header BG</div></div></div>
+    <div class="color-card" onclick="copyColor('#2a2a2a','Nav BG')"><div class="color-swatch color-swatch-sm" style="background:#2a2a2a"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#2a2a2a</div><div class="name">Nav BG</div></div></div>
+    <div class="color-card" onclick="copyColor('#f8f9fa','Page BG')"><div class="color-swatch color-swatch-sm" style="background:#f8f9fa;border:1px solid #eee"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#f8f9fa</div><div class="name">Page BG</div></div></div>
+    <div class="color-card" onclick="copyColor('#e0e0e0','Border')"><div class="color-swatch color-swatch-sm" style="background:#e0e0e0"><div class="color-copy-hint"><i class="fi fi-rs-copy"></i></div></div><div class="color-info"><div class="hex">#e0e0e0</div><div class="name">Border</div></div></div>
+  </div>
+</section>
+
+<!-- TIPOGRAFIA -->
+<section class="section" id="sec-tipografia">
+  <div class="section-header"><div class="section-tag">02 Fundamentos</div><h2 class="section-title">Tipografia</h2><p class="section-desc">Familia: <strong>Nunito</strong> (Google Fonts). Pesos 300 a 900.</p></div>
+  <div class="type-scale">
+    <div class="type-row"><div class="type-label">H1</div><h1 style="font-size:clamp(22px,3.5vw,36px);font-weight:900;line-height:1.15">Titulo Principal da Pagina</h1><div class="type-meta">clamp(24–36px) · 900</div></div>
+    <div class="type-row"><div class="type-label">H2</div><h2 style="font-size:22px;font-weight:800">Subtitulo de Secao</h2><div class="type-meta">22px · 800</div></div>
+    <div class="type-row"><div class="type-label">H3</div><h3 style="font-size:18px;font-weight:800">Cabecalho de Card</h3><div class="type-meta">18px · 800</div></div>
+    <div class="type-row"><div class="type-label">Body</div><p style="font-size:16px;font-weight:400;line-height:1.85">Paragrafo do artigo com line-height 1.85. Lorem ipsum dolor sit amet consectetur.</p><div class="type-meta">16px · 400</div></div>
+    <div class="type-row"><div class="type-label">Small</div><span style="font-size:13px;color:#888">Autor · Data · Categoria</span><div class="type-meta">13px · 400</div></div>
+    <div class="type-row"><div class="type-label">Micro</div><span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#888">CATEGORIA · TAGS</span><div class="type-meta">11px · 700</div></div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<section class="section" id="sec-logos">
+  <div class="section-header"><div class="section-tag">03 Identidade</div><h2 class="section-title">Logos, Formas e Padroes</h2></div>
+  <h3 style="font-size:13px;font-weight:700;margin-bottom:12px">Logos Principais</h3>
+  <div class="logo-grid">
+    <div class="logo-card"><div class="logo-card-bg dark"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_branca_e_verde.png" alt="Logo" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Principal Branca e Verde · Fundo escuro</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg light"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_preta_e_verde.png" alt="Logo" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Principal Preta e Verde · Fundo claro</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg green"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_mono_branca.png" alt="Logo" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Principal Mono Branca · Fundo verde</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg light"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_mono_preta.png" alt="Logo" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Principal Mono Preta · Fundo claro</p></div></div>
+  </div>
+  <div class="divider"></div>
+  <h3 style="font-size:13px;font-weight:700;margin-bottom:12px">Icones</h3>
+  <div class="logo-grid">
+    <div class="logo-card"><div class="logo-card-bg dark"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_colorida_branca_e_verde.png" alt="Icone" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Icone Branca e Verde</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg light"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_colorida_preta_e_verde.png" alt="Icone" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Icone Preta e Verde</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg green"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_mono_branca.png" alt="Icone" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Icone Mono Branca</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg light"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_colorida_verde.png" alt="Icone" onerror="this.style.display='none'"/></div><div class="logo-card-info"><p>Icone Verde</p></div></div>
+  </div>
+  <div class="divider"></div>
+  <h3 style="font-size:13px;font-weight:700;margin-bottom:12px">Formas Geometricas</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px">
+    <div class="logo-card"><div class="logo-card-bg light" style="min-height:110px"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Formas/Formas%201.svg" style="max-height:80px" onerror="this.parentElement.innerHTML='<span style=color:#aaa;font-size:11px>Forma 1</span>'"/></div><div class="logo-card-info"><p>Formas 1.svg</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg light" style="min-height:110px"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Formas/Formas%202.svg" style="max-height:80px" onerror="this.parentElement.innerHTML='<span style=color:#aaa;font-size:11px>Forma 2</span>'"/></div><div class="logo-card-info"><p>Formas 2.svg</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg light" style="min-height:110px"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Formas/Formas%203.svg" style="max-height:80px" onerror="this.parentElement.innerHTML='<span style=color:#aaa;font-size:11px>Forma 3</span>'"/></div><div class="logo-card-info"><p>Formas 3.svg</p></div></div>
+    <div class="logo-card"><div class="logo-card-bg light" style="min-height:110px"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Formas/Formas%204.svg" style="max-height:80px" onerror="this.parentElement.innerHTML='<span style=color:#aaa;font-size:11px>Forma 4</span>'"/></div><div class="logo-card-info"><p>Formas 4.svg</p></div></div>
+  </div>
+</section>
+
+<!-- BOTOES -->
+<section class="section" id="sec-botoes">
+  <div class="section-header"><div class="section-tag">04 Componentes</div><h2 class="section-title">Botoes</h2></div>
+  <div class="component-group"><div class="component-label">Primario</div><div class="demo-row"><button class="btn btn-primary btn-sm"><i class="fi fi-rs-leaf"></i> Pequeno</button><button class="btn btn-primary"><i class="fi fi-rs-book-open-cover"></i> Ler Artigo</button><button class="btn btn-primary btn-lg"><i class="fi fi-rs-list"></i> Ver Todos</button><button class="btn btn-primary btn-pill"><i class="fi fi-rs-star"></i> Destaque</button></div></div>
+  <div class="component-group"><div class="component-label">Outline / Secundario</div><div class="demo-row"><button class="btn btn-secondary btn-sm"><i class="fi fi-rs-plus"></i> Pequeno</button><button class="btn btn-secondary"><i class="fi fi-rs-rotate-right"></i> Carregar Mais</button><button class="btn btn-secondary btn-lg">Ver Todos</button></div></div>
+  <div class="component-group"><div class="component-label">Dark</div><div class="demo-row"><button class="btn btn-dark btn-sm"><i class="fi fi-rs-envelope"></i> Newsletter</button><button class="btn btn-dark"><i class="fi fi-rs-download"></i> Baixar Guia</button></div></div>
+  <div class="component-group"><div class="component-label">Ghost</div><div class="demo-row"><button class="btn btn-ghost btn-sm">Ghost Pequeno</button><button class="btn btn-ghost"><i class="fi fi-rs-arrow-right"></i> Saiba Mais</button></div></div>
+  <div class="component-group"><div class="component-label">Desabilitado</div><div class="demo-row"><button class="btn btn-primary btn-disabled" disabled>Desabilitado</button><button class="btn btn-secondary btn-disabled" disabled>Desabilitado</button></div></div>
+</section>
+
+<!-- FORMULARIOS -->
+<section class="section" id="sec-formularios">
+  <div class="section-header"><div class="section-tag">05 Componentes</div><h2 class="section-title">Formularios e Inputs</h2></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px">
+    <div>
+      <div class="component-label">Busca</div>
+      <div class="form-group"><div class="input-wrap"><i class="fi fi-rs-search"></i><input type="text" class="form-input search" placeholder="Buscar artigos..."/></div></div>
+      <div class="component-label" style="margin-top:12px">Campos</div>
+      <div class="form-group"><label class="form-label">Nome *</label><input type="text" class="form-input" placeholder="Seu nome completo"/></div>
+      <div class="form-group"><label class="form-label">E-mail *</label><input type="email" class="form-input" placeholder="seu@email.com"/></div>
+      <div class="form-group"><label class="form-label">Estado</label><select class="form-input"><option>Selecione seu estado</option><option>Sao Paulo</option><option>Minas Gerais</option></select></div>
+      <div class="form-group"><label class="form-label">Comentario</label><textarea class="form-input" placeholder="Escreva aqui..."></textarea></div>
+    </div>
+    <div>
+      <div class="component-label">Checkboxes</div>
+      <div class="form-checks" style="margin-bottom:18px">
+        <label class="form-check"><input type="checkbox" checked/> Pneus para Carro</label>
+        <label class="form-check"><input type="checkbox"/> Pneus para Moto</label>
+        <label class="form-check"><input type="checkbox"/> Off-Road</label>
+      </div>
+      <div class="component-label">Newsletter (Fundo Verde)</div>
+      <div style="background:var(--cp);padding:18px;border-radius:var(--rl)">
+        <p style="color:#fff;font-size:12px;font-weight:700;margin-bottom:9px">Receba dicas exclusivas de pneus!</p>
+        <div style="display:flex;gap:7px">
+          <input type="email" class="form-input" placeholder="Seu melhor e-mail" style="border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff"/>
+          <button class="btn btn-dark" style="white-space:nowrap;flex-shrink:0">Receber</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BADGES -->
+<section class="section" id="sec-badges">
+  <div class="section-header"><div class="section-tag">06 Componentes</div><h2 class="section-title">Badges, Categorias e Tags</h2></div>
+  <div class="component-group"><div class="component-label">Badges de Categoria</div><div class="demo-row"><span class="badge badge-primary"><i class="fi fi-rs-wrench"></i> Manutencao</span><span class="badge badge-primary">Pneus Carro</span><span class="badge badge-dark"><i class="fi fi-rs-star"></i> Marcas</span><span class="badge badge-outline">Destaque</span><span class="badge badge-primary"><i class="fi fi-rs-mountain"></i> Off-Road</span></div></div>
+  <div class="component-group"><div class="component-label">Tags</div><div class="demo-row"><span class="badge badge-tag">Michelin</span><span class="badge badge-tag">Bridgestone</span><span class="badge badge-tag">Pirelli</span><span class="badge badge-tag">Calibragem</span><span class="badge badge-tag">Off Road</span><span class="badge badge-tag">Seguranca</span><span class="badge badge-tag">4x4</span></div></div>
+  <div class="component-group"><div class="component-label">Meta Badges</div><div class="demo-row"><span class="badge badge-meta"><i class="fi fi-rs-clock"></i> 8 min de leitura</span><span class="badge badge-meta"><i class="fi fi-rs-calendar"></i> 05 Abr 2025</span></div></div>
+  <div class="component-group"><div class="component-label">Breadcrumb</div><nav style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--cfmu)"><a href="#" style="color:var(--cp);text-decoration:none;font-weight:700;display:flex;align-items:center;gap:3px"><i class="fi fi-rs-home"></i> Inicio</a><span>/</span><a href="#" style="color:var(--cp);text-decoration:none;font-weight:700">Manutencao</a><span>/</span><span style="color:var(--cfd);font-weight:600">Como Escolher...</span></nav></div>
+</section>
+
+<!-- ALERTAS -->
+<section class="section" id="sec-alertas">
+  <div class="section-header"><div class="section-tag">07 Componentes</div><h2 class="section-title">Alertas e Feedback</h2></div>
+  <div style="max-width:560px;display:flex;flex-direction:column">
+    <div class="alert alert-success"><i class="fi fi-rs-check-circle"></i><div><strong>Sucesso!</strong> Comentario enviado com sucesso!</div></div>
+    <div class="alert alert-info"><i class="fi fi-rs-info"></i><div><strong>Informacao:</strong> Seu e-mail nao sera publicado.</div></div>
+    <div class="alert alert-warning"><i class="fi fi-rs-triangle-warning"></i><div><strong>Atencao!</strong> Nunca use pneus abaixo do indice de carga especificado.</div></div>
+    <div class="alert alert-error"><i class="fi fi-rs-cross-circle"></i><div><strong>Erro!</strong> Nao foi possivel enviar o formulario.</div></div>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section class="section" id="sec-cards">
+  <div class="section-header"><div class="section-tag">08 Componentes</div><h2 class="section-title">Cards de Post</h2></div>
+  <div class="component-label">Cards Padrao (Grid)</div>
+  <div class="cards-demo-grid" style="margin-bottom:24px">
+    <div class="ds-card"><div class="ds-card-img"><i class="fi fi-rs-car-mechanic"></i><div class="card-badge"><span class="badge badge-primary">Manutencao</span></div></div><div class="ds-card-body"><h4>Calibragem Correta: Por Que a Pressao Importa?</h4><p>Como manter a pressao ideal nos pneus.</p></div><div class="ds-card-footer"><div class="meta"><i class="fi fi-rs-clock"></i> 5 min</div><a href="#" class="btn btn-ghost btn-sm">Ler mais</a></div></div>
+    <div class="ds-card"><div class="ds-card-img"><i class="fi fi-rs-car"></i><div class="card-badge"><span class="badge badge-dark">Marcas</span></div></div><div class="ds-card-body"><h4>Michelin vs Bridgestone: Qual a Melhor?</h4><p>Comparativo completo entre as duas maiores fabricantes.</p></div><div class="ds-card-footer"><div class="meta"><i class="fi fi-rs-clock"></i> 7 min</div><a href="#" class="btn btn-ghost btn-sm">Ler mais</a></div></div>
+    <div class="ds-card"><div class="ds-card-img" style="background:linear-gradient(135deg,#1e2d1e,#2d4a2d)"><i class="fi fi-rs-mountain" style="color:#00cc44"></i><div class="card-badge"><span class="badge badge-primary">Off-Road</span></div></div><div class="ds-card-body"><h4>Pneus Off-Road: Os 5 Melhores de 2025</h4><p>Guia completo dos melhores pneus para trilhas.</p></div><div class="ds-card-footer"><div class="meta"><i class="fi fi-rs-clock"></i> 6 min</div><a href="#" class="btn btn-ghost btn-sm">Ler mais</a></div></div>
+  </div>
+  <div class="component-label">Card Hero (Destaque Principal)</div>
+  <div style="background:linear-gradient(135deg,#0a1a0a,#1a3a1a);border-radius:var(--rl);padding:32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:200px;position:relative;overflow:hidden;border:1px solid rgba(0,153,51,.2)">
+    <div style="position:absolute;right:28px;top:50%;transform:translateY(-50%);font-size:90px;opacity:.1"><i class="fi fi-rs-car" style="color:var(--cp)"></i></div>
+    <div style="display:flex;gap:6px;margin-bottom:9px"><span class="badge badge-primary">Destaque</span><span class="badge badge-outline">Manutencao</span><span class="badge badge-meta"><i class="fi fi-rs-clock"></i> 8 min</span></div>
+    <h2 style="color:#fff;font-size:clamp(15px,2.5vw,22px);font-weight:900;max-width:440px;line-height:1.3">Como Escolher o Pneu Ideal para Seu Carro: Guia Completo 2025</h2>
+    <div style="margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:6px"><img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_colorida_branca_e_verde.png" alt="logo" style="height:18px;object-fit:contain" onerror="this.style.display='none'"/><span style="color:rgba(255,255,255,.45);font-size:11px">Equipe PneuGreen</span></div>
+      <button class="btn btn-primary btn-sm"><i class="fi fi-rs-book-open-cover"></i> Ler Artigo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ACCORDION -->
+<section class="section" id="sec-accordion">
+  <div class="section-header"><div class="section-tag">09 Componentes</div><h2 class="section-title">Accordion / Sanfona</h2></div>
+  <div style="max-width:600px">
+    <div class="accordion">
+      <div class="accordion-item"><button class="accordion-trigger" onclick="toggleAcc(this)"><span><i class="fi fi-rs-question" style="margin-right:7px;color:var(--cp)"></i>Qual a vida util media de um pneu?</span><i class="fi fi-rs-plus accordion-icon"></i></button><div class="accordion-body"><div class="accordion-body-inner">A vida util media de um pneu e de 40.000 a 70.000 km. Recomenda-se substituicao a cada 5 anos, mesmo com boa aparencia visual.</div></div></div>
+      <div class="accordion-item"><button class="accordion-trigger" onclick="toggleAcc(this)"><span><i class="fi fi-rs-question" style="margin-right:7px;color:var(--cp)"></i>Como calibrar os pneus corretamente?</span><i class="fi fi-rs-plus accordion-icon"></i></button><div class="accordion-body"><div class="accordion-body-inner">Sempre calibre com os pneus frios. A pressao recomendada esta na etiqueta na porta do carro ou no manual do proprietario.</div></div></div>
+      <div class="accordion-item"><button class="accordion-trigger" onclick="toggleAcc(this)"><span><i class="fi fi-rs-question" style="margin-right:7px;color:var(--cp)"></i>Michelin ou Bridgestone: qual escolher?</span><i class="fi fi-rs-plus accordion-icon"></i></button><div class="accordion-body"><div class="accordion-body-inner">Michelin se destaca em durabilidade; Bridgestone em performance e aderencia no molhado. Ambas sao excelentes opcoes.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<section class="section" id="sec-tabs">
+  <div class="section-header"><div class="section-tag">10 Componentes</div><h2 class="section-title">Tabs / Abas</h2></div>
+  <div style="max-width:600px">
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab(this,'tab1')"><i class="fi fi-rs-wrench" style="margin-right:4px"></i>Manutencao</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab2')"><i class="fi fi-rs-star" style="margin-right:4px"></i>Marcas</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab3')"><i class="fi fi-rs-mountain" style="margin-right:4px"></i>Off-Road</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab4')"><i class="fi fi-rs-shield-check" style="margin-right:4px"></i>Seguranca</button>
+    </div>
+    <div class="tab-panel active" id="tab1"><div class="tab-content-demo"><strong>Manutencao de Pneus</strong><br>Calibragem, rodizio, alinhamento e balanceamento.</div></div>
+    <div class="tab-panel" id="tab2"><div class="tab-content-demo"><strong>Guia de Marcas</strong><br>Michelin, Bridgestone, Pirelli, Goodyear e mais.</div></div>
+    <div class="tab-panel" id="tab3"><div class="tab-content-demo"><strong>Off-Road e 4x4</strong><br>Pneus para trilhas, lama, areia e terrenos extremos.</div></div>
+    <div class="tab-panel" id="tab4"><div class="tab-content-demo"><strong>Seguranca no Transito</strong><br>Como pneus afetam a frenagem e estabilidade do veiculo.</div></div>
+  </div>
+</section>
+
+<!-- CARROSSEL -->
+<section class="section" id="sec-carousel">
+  <div class="section-header"><div class="section-tag">11 Componentes</div><h2 class="section-title">Carrossel</h2><p class="section-desc"><!--Configure quantos cards aparecem no desktop e no mobile.--></p></div>
+  <div style="display:flex;gap:16px;align-items:center;margin-bottom:14px;flex-wrap:wrap;background:#fff;padding:12px 16px;border-radius:var(--r);border:1px solid var(--cb)">
+    <label style="font-size:12px;font-weight:700;color:var(--cfm);display:flex;align-items:center;gap:7px"><i class="fi fi-rs-desktop" style="color:var(--cp)"></i> Desktop: <select id="carDesktop" onchange="buildCarousel()" style="padding:5px 9px;border:2px solid var(--cib);border-radius:6px;font-family:var(--ff);font-size:12px;outline:none"><option value="3" selected>3 cards</option><option value="2">2 cards</option><option value="1">1 card</option></select></label>
+    <label style="font-size:12px;font-weight:700;color:var(--cfm);display:flex;align-items:center;gap:7px"><i class="fi fi-rs-mobile" style="color:var(--cp)"></i> Mobile: <select id="carMobile" onchange="buildCarousel()" style="padding:5px 9px;border:2px solid var(--cib);border-radius:6px;font-family:var(--ff);font-size:12px;outline:none"><option value="1" selected>1 card</option><option value="2">2 cards</option></select></label>
+  </div>
+  <div style="max-width:700px"><div id="carouselContainer"></div></div>
+</section>
+<!-- BUILDER RD STATION -->
+<section class="section" id="sec-builder">
+  <div class="section-header">
+    <div class="section-tag">12 Ferramentas</div>
+    <h2 class="section-title">RD Station Builder</h2>
+    <p class="section-desc">8 tipos de componentes com CSS namespaceado <code style="background:var(--cps);color:var(--cp);padding:2px 7px;border-radius:4px;font-size:11px">.ds-pneugreen-*</code> e JS isolado.</p>
+  </div>
+  <div class="builder-layout">
+    <div class="builder-panel">
+      <h3><i class="fi fi-rs-settings" style="color:var(--cp);margin-right:6px"></i>Configuracoes</h3>
+      <div class="builder-field">
+        <label>Tipo de Componente</label>
+        <select id="bType" onchange="bRender()">
+          <option value="cards">Cards Grid</option>
+          <option value="accordion">Accordion</option>
+          <option value="tabs">Tabs</option>
+          <option value="carousel">Carrossel</option>
+          <option value="timeline">Timeline</option>
+          <option value="pricing">Tabela de Preco</option>
+          <option value="testimonials">Depoimentos</option>
+          <option value="cta_banner">Banner CTA</option>
+        </select>
+      </div>
+      <div class="builder-field">
+        <label>Cor de Destaque</label>
+        <input type="color" id="bColor" value="#009933" onchange="bRender()" style="height:36px;cursor:pointer"/>
+      </div>
+      <div class="builder-field">
+        <label>Texto do Botao CTA</label>
+        <input type="text" id="bCTA" value="Saiba Mais" oninput="bRender()"/>
+      </div>
+      <div class="builder-field">
+        <label>URL do CTA</label>
+        <input type="text" id="bURL" value="#" oninput="bRender()"/>
+      </div>
+      <div class="builder-field">
+        <label>Target do Link</label>
+        <select id="bTarget" onchange="bRender()">
+          <option value="_self">_self (mesma aba)</option>
+          <option value="_blank">_blank (nova aba)</option>
+        </select>
+      </div>
+      <div class="builder-field" id="bColsField" style="display:none">
+        <label>Colunas no Desktop</label>
+        <select id="bDesktopCols" onchange="bRender()">
+          <option value="3" selected>3 colunas</option>
+          <option value="2">2 colunas</option>
+          <option value="1">1 coluna</option>
+        </select>
+      </div>
+      <div class="builder-field" id="bMobileColsField" style="display:none">
+        <label>Colunas no Mobile</label>
+        <select id="bMobileCols" onchange="bRender()">
+          <option value="1" selected>1 coluna</option>
+          <option value="2">2 colunas</option>
+        </select>
+      </div>
+      <div class="builder-field">
+        <label>Itens</label>
+        <div id="bItemsList"></div>
+        <button class="btn btn-secondary btn-sm" onclick="bAddItem()" style="width:100%;margin-top:6px"><i class="fi fi-rs-plus"></i> Adicionar Item</button>
+      </div>
+    </div>
+    <div class="builder-preview">
+      <div class="preview-header">
+        <div class="preview-dots"><div class="preview-dot" style="background:#ff5f57"></div><div class="preview-dot" style="background:#febc2e"></div><div class="preview-dot" style="background:#28c840"></div></div>
+        <span>Preview em tempo real</span>
+        <button class="btn btn-ghost btn-sm" onclick="bCopy()" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button>
+      </div>
+      <div class="preview-body" id="bPreview"></div>
+      <div class="preview-code-wrap">
+        <div class="preview-code-header"><span>HTML/CSS/JS Plug and Play</span></div>
+        <div class="preview-code" id="bCode"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ICONES -->
+<section class="section" id="sec-icones">
+  <div class="section-header"><div class="section-tag">13 Ferramentas</div><h2 class="section-title">Galeria de Icones — Uicons</h2><p class="section-desc">Selecione um icone, escolha cor e tamanho, copie HTML ou baixe PNG / SVG.</p></div>
+
+  <!-- TOOLBAR LINHA 1: busca + cor -->
+  <div style="background:#fff;border:1px solid var(--cb);border-radius:var(--r);padding:14px 16px;margin-bottom:10px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+      <div style="position:relative;flex:1;min-width:160px">
+        <i class="fi fi-rs-search" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--cfmu);font-size:13px"></i>
+        <input type="text" id="iconSearch" placeholder="Pesquisar icone... ex: car, star" oninput="filterIcons()" style="width:100%;padding:8px 11px 8px 32px;border:2px solid var(--cib);border-radius:var(--r);font-family:var(--ff);font-size:12px;outline:none"/>
+      </div>
+    </div>
+    <!-- Cores da marca -->
+    <div style="margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;color:var(--cfmu);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">Cores da marca</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+        <button onclick="setIconColor('#009933')" title="#009933" style="width:28px;height:28px;background:#009933;border:3px solid transparent;border-radius:6px;cursor:pointer;transition:border-color .15s" id="icb-1"></button>
+        <button onclick="setIconColor('#006622')" title="#006622" style="width:28px;height:28px;background:#006622;border:3px solid transparent;border-radius:6px;cursor:pointer;transition:border-color .15s" id="icb-2"></button>
+        <button onclick="setIconColor('#00cc44')" title="#00cc44" style="width:28px;height:28px;background:#00cc44;border:3px solid transparent;border-radius:6px;cursor:pointer;transition:border-color .15s" id="icb-3"></button>
+        <button onclick="setIconColor('#0f0f0f')" title="#0f0f0f" style="width:28px;height:28px;background:#0f0f0f;border:3px solid transparent;border-radius:6px;cursor:pointer;transition:border-color .15s" id="icb-4"></button>
+        <button onclick="setIconColor('#ffffff')" title="#ffffff" style="width:28px;height:28px;background:#fff;border:3px solid #e0e0e0;border-radius:6px;cursor:pointer;transition:border-color .15s" id="icb-5"></button>
+        <button onclick="setIconColor('#888888')" title="#888888" style="width:28px;height:28px;background:#888;border:3px solid transparent;border-radius:6px;cursor:pointer;transition:border-color .15s" id="icb-6"></button>
+        <div style="width:1px;height:24px;background:var(--cb);margin:0 2px"></div>
+        <label style="font-size:11px;font-weight:700;color:var(--cfm);display:flex;align-items:center;gap:6px">
+          <i class="fi fi-rs-palette" style="color:var(--cp)"></i> HEX personalizado:
+          <input type="color" id="iconColorPicker" value="#009933" oninput="setIconColor(this.value)" style="width:32px;height:28px;border:2px solid var(--cb);border-radius:6px;cursor:pointer;padding:2px"/>
+          <input type="text" id="iconColorHex" value="#009933" maxlength="7" oninput="onHexInput(this.value)" style="width:72px;padding:5px 8px;border:2px solid var(--cib);border-radius:6px;font-family:monospace;font-size:12px;outline:none"/>
+        </label>
+      </div>
+    </div>
+    <!-- Tamanhos fixos -->
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--cfmu);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">Tamanho de download</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="icon-size-btn active" data-size="32" onclick="setIconSize(32,this)">32 px</button>
+        <button class="icon-size-btn" data-size="64" onclick="setIconSize(64,this)">64 px</button>
+        <button class="icon-size-btn" data-size="128" onclick="setIconSize(128,this)">128 px</button>
+        <button class="icon-size-btn" data-size="256" onclick="setIconSize(256,this)">256 px</button>
+        <button class="icon-size-btn" data-size="512" onclick="setIconSize(512,this)">512 px</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+  .icon-size-btn{padding:5px 13px;border:2px solid var(--cb);border-radius:6px;font-family:var(--ff);font-size:11px;font-weight:700;color:var(--cfm);background:#fff;cursor:pointer;transition:all .15s}
+  .icon-size-btn:hover{border-color:var(--cp);color:var(--cp)}
+  .icon-size-btn.active{border-color:var(--cp);background:var(--cps);color:var(--cp)}
+  </style>
+
+  <div class="icons-grid" id="iconsGrid"></div>
+
+  <!-- PAINEL DO ICONE SELECIONADO -->
+  <div id="iconPanel" style="display:none;margin-top:16px;background:#fff;border:1px solid var(--cb);border-radius:var(--rl);padding:20px">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+      <!-- Preview em múltiplos tamanhos -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div id="iconPreviewBig"></div>
+        <div style="display:flex;gap:8px;align-items:flex-end">
+          <div style="text-align:center"><div id="iconP16" style="font-size:16px"></div><div style="font-size:9px;color:var(--cfmu);margin-top:3px">16</div></div>
+          <div style="text-align:center"><div id="iconP24" style="font-size:24px"></div><div style="font-size:9px;color:var(--cfmu);margin-top:3px">24</div></div>
+          <div style="text-align:center"><div id="iconP32" style="font-size:32px"></div><div style="font-size:9px;color:var(--cfmu);margin-top:3px">32</div></div>
+          <div style="text-align:center"><div id="iconP48" style="font-size:48px"></div><div style="font-size:9px;color:var(--cfmu);margin-top:3px">48</div></div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:220px">
+        <div style="font-size:10px;font-weight:700;color:var(--cfmu);margin-bottom:5px">Classe HTML:</div>
+        <code id="iconSelCode" style="font-size:13px;color:var(--cp);background:var(--cps);padding:6px 11px;border-radius:6px;display:block;margin-bottom:14px;word-break:break-all"></code>
+        <div style="font-size:10px;font-weight:700;color:var(--cfmu);margin-bottom:7px">Download — <span id="iconDlInfo" style="color:var(--cp)">32 × 32 px</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" onclick="copyIconHtml()"><i class="fi fi-rs-copy"></i> Copiar HTML</button>
+          <button class="btn btn-secondary btn-sm" onclick="downloadIconPng()"><i class="fi fi-rs-download"></i> PNG</button>
+          <button class="btn btn-ghost btn-sm" onclick="downloadIconSvg()"><i class="fi fi-rs-vector"></i> SVG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMPLATES -->
+<section class="section" id="sec-templates">
+  <div class="section-header"><div class="section-tag">14 Templates</div><h2 class="section-title">Templates Web e E-mail</h2><p class="section-desc"><!--Landing Page com 10 dobras, Thank You, e-mails e popups com logotipo.--></p></div>
+  <div class="templates-tabs">
+    <button class="template-tab-btn active" onclick="showTmpl(this,'tmpl-lp')"><i class="fi fi-rs-home"></i> Landing Page</button>
+    <button class="template-tab-btn" onclick="showTmpl(this,'tmpl-ty')"><i class="fi fi-rs-check-circle"></i> Thank You</button>
+    <button class="template-tab-btn" onclick="showTmpl(this,'tmpl-em1')"><i class="fi fi-rs-envelope"></i> E-mail Entrega</button>
+    <button class="template-tab-btn" onclick="showTmpl(this,'tmpl-em-promo')"><i class="fi fi-rs-gift"></i> E-mail Promocao</button>
+    <button class="template-tab-btn" onclick="showTmpl(this,'tmpl-em2')"><i class="fi fi-rs-paper-plane"></i> E-mail Newsletter</button>
+    <button class="template-tab-btn" onclick="showTmpl(this,'tmpl-pop1')"><i class="fi fi-rs-layout-sidebar"></i> Popup Lateral</button>
+    <button class="template-tab-btn" onclick="showTmpl(this,'tmpl-pop2')"><i class="fi fi-rs-window"></i> Popup Central</button>
+  </div>
+
+  <!-- LANDING PAGE: 10 dobras -->
+  <div id="tmpl-lp" class="template-content active">
+    <div class="template-preview-wrap">
+      <div class="template-iframe-header"><div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div><span>Landing Page — 10 Dobras</span><button class="btn btn-ghost btn-sm" onclick="copyTmpl('lp-block')" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button></div>
+      <div id="lp-block" class="lp">
+
+        <!-- DOBRA 1: NAV + HERO com foto -->
+        <nav class="lp-nav">
+          <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_branca_e_verde.png" alt="PneuGreen" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=color:#009933;font-weight:900;font-size:15px>PneuGreen</span>')"/>
+          <div class="lp-nav-links">
+            <a href="#lp-beneficios">Beneficios</a>
+            <a href="#lp-como">Como Funciona</a>
+            <a href="#lp-depo">Depoimentos</a>
+          </div>
+          <a href="#lp-cta" class="lp-btn-p" style="font-size:11px;padding:7px 14px"><i class="fi fi-rs-download"></i> Baixar Guia</a>
+        </nav>
+
+        <section class="lp-hero">
+          <div>
+            <div class="lp-tag"><i class="fi fi-rs-leaf"></i> Guia Gratuito 2025</div>
+            <h1>Escolha o Pneu <em>Certo</em> para o Seu Carro</h1>
+            <p>Aprenda a ler numeracoes, compare marcas e economize na proxima troca com nosso guia completo.</p>
+            <!-- FORM NA PRIMEIRA DOBRA -->
+            <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:20px;margin-top:6px;backdrop-filter:blur(4px)">
+              <p style="font-size:11px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:5px"><i class="fi fi-rs-download" style="color:var(--cpl)"></i> Baixe o guia gratis agora</p>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <input type="text" placeholder="Seu nome completo" style="width:100%;padding:10px 14px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);border-radius:8px;font-family:'Nunito',sans-serif;font-size:13px;color:#fff;outline:none" onfocus="this.style.borderColor='rgba(0,204,68,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.2)'"/>
+                <input type="email" placeholder="seu@email.com" style="width:100%;padding:10px 14px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);border-radius:8px;font-family:'Nunito',sans-serif;font-size:13px;color:#fff;outline:none" onfocus="this.style.borderColor='rgba(0,204,68,.6)'" onblur="this.style.borderColor='rgba(255,255,255,.2)'"/>
+                <button style="width:100%;background:#009933;color:#fff;border:none;padding:12px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .2s" onmouseover="this.style.background='#006622'" onmouseout="this.style.background='#009933'"><i class="fi fi-rs-download"></i> Quero meu Guia Gratis</button>
+              </div>
+              <p style="font-size:10px;color:rgba(255,255,255,.35);margin-top:9px;display:flex;align-items:center;gap:5px"><i class="fi fi-rs-lock"></i> Sem spam. Cancele quando quiser.</p>
+            </div>
+            <div class="lp-hero-stats">
+              <div class="lp-stat"><div class="num">+50k</div><div class="lbl">Downloads</div></div>
+              <div class="lp-stat"><div class="num">4.9</div><div class="lbl">Avaliacao</div></div>
+              <div class="lp-stat"><div class="num">98%</div><div class="lbl">Satisfacao</div></div>
+            </div>
+          </div>
+          <div class="lp-hero-img">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Pneu de alta performance" loading="lazy"/>
+          </div>
+        </section>
+
+        <!-- DOBRA 2: BENEFICIOS -->
+        <section class="lp-sec light" id="lp-beneficios">
+          <div style="max-width:1100px;margin:0 auto">
+            <div class="lp-tag-dark"><i class="fi fi-rs-star"></i> Por que este guia?</div>
+            <div class="lp-h2">Informacao tecnica, linguagem simples</div>
+            <p class="lp-sub">Tudo que voce precisa saber para escolher, calibrar e conservar seus pneus.</p>
+            <div class="benefits-grid">
+              <div class="benefit-card"><div class="icon"><i class="fi fi-rs-shield-check"></i></div><h3>Conteudo Verificado</h3><p>Revisado por especialistas com mais de 15 anos no setor automotivo.</p></div>
+              <div class="benefit-card"><div class="icon"><i class="fi fi-rs-car-mechanic"></i></div><h3>Pratico e Objetivo</h3><p>Aprenda a ler a numeracao do pneu em menos de 10 minutos.</p></div>
+              <div class="benefit-card"><div class="icon"><i class="fi fi-rs-piggy-bank"></i></div><h3>Economize na Troca</h3><p>Saiba quando trocar antes do desgaste critico e evite gastos extras.</p></div>
+              <div class="benefit-card"><div class="icon"><i class="fi fi-rs-road"></i></div><h3>Para Todos os Usos</h3><p>Carro, moto, SUV e off-road cobertos no mesmo guia.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOBRA 3: FOTO + TEXTO (SPLIT) -->
+        <section class="lp-split">
+          <div class="lp-split-img">
+            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80" alt="Carro na estrada" loading="lazy"/>
+          </div>
+          <div class="lp-split-content">
+            <div class="lp-tag" style="background:rgba(0,153,51,.15);border-color:rgba(0,153,51,.3);color:#00cc44"><i class="fi fi-rs-book-open-cover"></i> O que voce vai aprender</div>
+            <h2 style="font-size:clamp(18px,2.2vw,24px);font-weight:900;color:#fff;margin-bottom:10px;line-height:1.3">Tudo sobre pneus em um so lugar</h2>
+            <p style="color:rgba(255,255,255,.5);font-size:13px;line-height:1.8;margin-bottom:16px">Do iniciante ao avancado. Nosso guia cobre desde a numeracao tecnica ate a comparacao entre marcas.</p>
+            <ul class="lp-checklist">
+              <li class="lp-check"><i class="fi fi-rs-check-circle"></i> Como ler a numeracao do pneu</li>
+              <li class="lp-check"><i class="fi fi-rs-check-circle"></i> Indice de carga e velocidade</li>
+              <li class="lp-check"><i class="fi fi-rs-check-circle"></i> Quando substituir antes do limite legal</li>
+              <li class="lp-check"><i class="fi fi-rs-check-circle"></i> Marcas de melhor custo-beneficio</li>
+              <li class="lp-check"><i class="fi fi-rs-check-circle"></i> Calibragem por tipo de veiculo</li>
+            </ul>
+            <a href="#lp-cta" class="lp-btn-p" style="align-self:flex-start"><i class="fi fi-rs-download"></i> Baixar Gratis</a>
+          </div>
+        </section>
+
+        <!-- DOBRA 4: MARCAS -->
+        <section class="lp-brands">
+          <div style="max-width:1100px;margin:0 auto">
+            <h3><i class="fi fi-rs-star" style="color:var(--cp)"></i> Marcas analisadas no guia</h3>
+            <div class="lp-brands-row">
+              <div class="lp-brand">MICHELIN</div>
+              <div class="lp-brand">BRIDGESTONE</div>
+              <div class="lp-brand">PIRELLI</div>
+              <div class="lp-brand">GOODYEAR</div>
+              <div class="lp-brand">CONTINENTAL</div>
+              <div class="lp-brand">DUNLOP</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOBRA 5: COMO FUNCIONA -->
+        <section class="lp-sec light" id="lp-como">
+          <div style="max-width:1100px;margin:0 auto">
+            <div class="lp-sec-center" style="margin-bottom:36px">
+              <div class="lp-tag-dark"><i class="fi fi-rs-list"></i> Passo a Passo</div>
+              <div class="lp-h2">Como funciona</div>
+              <p class="lp-sub">Em 3 passos simples voce ja tem acesso ao material completo.</p>
+            </div>
+            <div class="how-steps">
+              <div class="how-step"><div class="step-num">1</div><h3>Preencha o formulario</h3><p>Nome e e-mail. Menos de 30 segundos.</p></div>
+              <div class="how-step"><div class="step-num">2</div><h3>Confirme o e-mail</h3><p>Clique no link enviado para sua caixa.</p></div>
+              <div class="how-step"><div class="step-num">3</div><h3>Baixe o guia</h3><p>PDF completo disponivel imediatamente.</p></div>
+              <div class="how-step"><div class="step-num">4</div><h3>Economize</h3><p>Aplique as dicas e pague o preco justo.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOBRA 6: FOTO DESTAQUE FULL-WIDTH -->
+        <section class="lp-fullphoto">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1400&q=80" alt="Carro em alta velocidade" loading="lazy"/>
+          <div class="lp-fullphoto-overlay">
+            <div style="max-width:480px">
+              <div class="lp-tag" style="margin-bottom:12px"><i class="fi fi-rs-bolt"></i> Performance</div>
+              <h2 style="color:#fff;font-size:clamp(18px,2.8vw,30px);font-weight:900;line-height:1.2;margin-bottom:11px">O pneu certo faz toda a diferenca na pista</h2>
+              <p style="color:rgba(255,255,255,.6);font-size:13px;line-height:1.7;margin-bottom:18px">Seguranca, conforto e economia de combustivel comecam pela escolha correta.</p>
+              <a href="#lp-cta" class="lp-btn-p"><i class="fi fi-rs-download"></i> Quero o Guia</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOBRA 7: DEPOIMENTOS -->
+        <section class="lp-sec dark" id="lp-depo">
+          <div style="max-width:1100px;margin:0 auto">
+            <div class="lp-tag" style="margin-bottom:10px"><i class="fi fi-rs-comment"></i> Depoimentos</div>
+            <div class="lp-h2-inv">O que dizem nossos leitores</div>
+            <p class="lp-sub-inv">Mais de 50.000 motoristas ja baixaram e aplicaram as dicas.</p>
+            <div class="testimonials-grid">
+              <div class="testimonial-card"><div class="stars"><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i></div><blockquote>Economizei mais de R$400 na ultima troca de pneus ao entender os indices corretos.</blockquote><div class="testimonial-author"><div class="author-avatar">RM</div><div><div class="author-name">Ricardo Mendes</div><div class="author-role">Motorista, SP</div></div></div></div>
+              <div class="testimonial-card"><div class="stars"><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i></div><blockquote>Aprendi a ler a numeracao do pneu em menos de 10 minutos. Muito pratico!</blockquote><div class="testimonial-author"><div class="author-avatar">AL</div><div><div class="author-name">Ana Lucia Costa</div><div class="author-role">Engenheira, BH</div></div></div></div>
+              <div class="testimonial-card"><div class="stars"><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i></div><blockquote>Informacao de qualidade, sem enrolacao. Ja indiquei para toda a minha familia.</blockquote><div class="testimonial-author"><div class="author-avatar">FC</div><div><div class="author-name">Fernando Carvalho</div><div class="author-role">Mecanico, Curitiba</div></div></div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOBRA 8: GALERIA DE FOTOS -->
+        <section class="lp-sec light">
+          <div style="max-width:1100px;margin:0 auto">
+            <div class="lp-tag-dark" style="margin-bottom:9px"><i class="fi fi-rs-images"></i> Galeria</div>
+            <div class="lp-h2">Nossos Artigos em Imagens</div>
+            <div class="lp-gallery-grid">
+              <div class="lp-gallery-item"><img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80" alt="Pneu detalhe" loading="lazy"/></div>
+              <div class="lp-gallery-item"><img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80" alt="Oficina de pneus" loading="lazy"/></div>
+              <div class="lp-gallery-item"><img src="https://images.unsplash.com/photo-1600712242805-5f78671b24da?w=600&q=80" alt="Calibragem" loading="lazy"/></div>
+              <div class="lp-gallery-item"><img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&q=80" alt="Pista" loading="lazy"/></div>
+              <div class="lp-gallery-item"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80" alt="Carro esportivo" loading="lazy"/></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DOBRA 9: CTA + FORMULARIO -->
+        <section class="lp-cta-sec" id="lp-cta">
+          <div style="max-width:1100px;margin:0 auto">
+            <div style="display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+              <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_mono_branca.png" alt="PneuGreen" style="height:30px;object-fit:contain" onerror="this.style.display='none'"/>
+            </div>
+            <h2>Baixe o Guia Gratuito Agora</h2>
+            <p>Mais de 50.000 motoristas ja baixaram. Sem spam. Cancele quando quiser.</p>
+            <div class="lp-cta-form">
+              <input type="text" placeholder="Seu nome completo"/>
+              <input type="email" placeholder="seu@email.com"/>
+              <button style="display:inline-flex;align-items:center;gap:6px;background:#0f0f0f;color:#fff;border:none;padding:10px 20px;border-radius:var(--r);font-family:var(--ff);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap"><i class="fi fi-rs-download"></i> Baixar Gratis</button>
+            </div>
+            <p style="font-size:10px;color:rgba(255,255,255,.45);margin-top:12px;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:5px"><i class="fi fi-rs-lock"></i> Seus dados estao seguros. Nao compartilhamos suas informacoes.</p>
+          </div>
+        </section>
+
+        <!-- DOBRA 10: FOOTER -->
+        <footer class="lp-footer">
+          <div style="max-width:1100px;margin:0 auto">
+            <div class="lp-footer-top">
+              <div class="lp-footer-brand">
+                <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_branca_e_verde.png" alt="PneuGreen" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=color:#009933;font-weight:900;font-size:14px>PneuGreen</span>')"/>
+                <p style="margin-top:11px">Blog de referencia em pneus e manutencao automotiva. Conteudo verificado por especialistas.</p>
+                <div class="lp-footer-socials" style="margin-top:14px">
+                  <a href="#"><i class="fi fi-rs-share"></i></a>
+                  <a href="#"><i class="fi fi-rs-envelope"></i></a>
+                  <a href="#"><i class="fi fi-rs-link"></i></a>
+                </div>
+              </div>
+              <div class="lp-footer-col"><h4>Categorias</h4><a href="#">Manutencao</a><a href="#">Marcas</a><a href="#">Off-Road</a><a href="#">Seguranca</a></div>
+              <div class="lp-footer-col"><h4>Marcas</h4><a href="#">Michelin</a><a href="#">Bridgestone</a><a href="#">Pirelli</a><a href="#">Goodyear</a></div>
+              <div class="lp-footer-col"><h4>PneuGreen</h4><a href="#">Sobre Nos</a><a href="#">Contato</a><a href="#">Privacidade</a><a href="#">Cancelar</a></div>
+            </div>
+            <div class="lp-footer-bottom">
+              <p>2025 PneuGreen. Todos os direitos reservados.</p>
+              <p>Feito com <i class="fi fi-rs-heart" style="color:var(--cp)"></i> para motoristas brasileiros</p>
+            </div>
+          </div>
+        </footer>
+
+      </div><!-- end lp-block -->
+    </div>
+  </div>
+
+  <!-- THANK YOU -->
+  <div id="tmpl-ty" class="template-content">
+    <div class="template-preview-wrap">
+      <div class="template-iframe-header"><div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div><span>Thank You Page</span><button class="btn btn-ghost btn-sm" onclick="copyTmpl('tmpl-ty-code')" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button></div>
+      <div id="tmpl-ty-code" style="background:#f0faf4;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center;font-family:var(--ff)">
+        <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_preta_e_verde.png" alt="PneuGreen" style="height:34px;object-fit:contain;margin-bottom:26px" onerror="this.style.display='none'"/>
+        <div style="width:68px;height:68px;background:#009933;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:30px;color:#fff"><i class="fi fi-rs-check"></i></div>
+        <h1 style="font-size:clamp(18px,4vw,28px);font-weight:900;color:#0f0f0f;margin-bottom:9px">Obrigado!</h1>
+        <p style="font-size:14px;color:#616161;max-width:380px;line-height:1.7;margin:0 auto 22px">Seu material foi enviado. Verifique sua caixa de entrada e pasta de spam.</p>
+        <div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap">
+          <a href="#" style="display:inline-flex;align-items:center;gap:6px;background:#009933;color:#fff;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none"><i class="fi fi-rs-book-open-cover"></i> Ler o Blog</a>
+          <a href="#" style="display:inline-flex;align-items:center;gap:6px;background:transparent;color:#009933;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none;border:2px solid #009933"><i class="fi fi-rs-share"></i> Compartilhar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-MAIL 1 ENTREGA -->
+  <div id="tmpl-em1" class="template-content">
+    <div class="template-preview-wrap">
+      <div class="template-iframe-header"><div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div><span>E-mail — Entrega de Material</span><button class="btn btn-ghost btn-sm" onclick="copyTmpl('tmpl-em1-code')" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button></div>
+      <div style="background:#f8f9fa;padding:20px;font-family:var(--ff)" id="tmpl-em1-code">
+        <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e0e0e0">
+          <!-- HEADER DE IMPACTO -->
+          <div style="background:linear-gradient(135deg,#061206 0%,#006622 60%,#009933 100%);padding:0;position:relative;overflow:hidden">
+            <!-- Foto de fundo com overlay -->
+            <div style="position:relative;height:160px;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.45)"/>
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,18,6,.7),rgba(0,102,34,.5))"></div>
+              <!-- Conteudo sobre a foto -->
+              <div style="position:absolute;inset:0;padding:20px 26px;display:flex;flex-direction:column;justify-content:flex-end">
+                <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_branca_e_verde.png" alt="PneuGreen" style="height:28px;object-fit:contain;display:block;margin-bottom:10px" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=font-family:Nunito,sans-serif;color:#009933;font-weight:900;font-size:18px;letter-spacing:-0.5px>PneuGreen</span>')"/>
+                <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(0,204,68,.2);border:1px solid rgba(0,204,68,.4);color:#00cc44;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-family:Nunito,sans-serif;width:fit-content"><i class="fi fi-rs-check-circle"></i> Material Disponivel</div>
+                <h1 style="color:#fff;font-size:20px;font-weight:900;margin:0;line-height:1.2;font-family:Nunito,sans-serif">Seu guia chegou!</h1>
+              </div>
+            </div>
+            <!-- Sub-header verde -->
+            <div style="padding:12px 26px;background:rgba(0,0,0,.25)">
+              <p style="color:rgba(255,255,255,.6);font-size:12px;margin:0;line-height:1.5;font-family:Nunito,sans-serif">O material que voce solicitou esta pronto para download.</p>
+            </div>
+          </div>
+          <div style="padding:26px">
+            <div style="background:#f0faf4;border:1px solid #d0edd8;border-radius:10px;padding:16px;margin-bottom:18px;display:flex;align-items:center;gap:14px">
+              <div style="width:48px;height:48px;background:#009933;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;color:#fff"><i class="fi fi-rs-document"></i></div>
+              <div><strong style="font-size:13px;color:#0f0f0f;display:block;margin-bottom:2px">Como Escolher o Pneu Ideal — Guia 2025</strong><span style="font-size:11px;color:#888">PDF gratuito · 24 paginas</span></div>
+            </div>
+            <a href="#" style="display:flex;align-items:center;justify-content:center;gap:7px;background:#009933;color:#fff;padding:13px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:16px;font-family:Nunito,sans-serif"><i class="fi fi-rs-download"></i> Baixar Guia Agora</a>
+            <p style="font-size:12px;color:#888;line-height:1.6">Qualquer duvida, responda este e-mail. Nossa equipe responde em ate 24h.</p>
+          </div>
+          <div style="background:#f8f9fa;padding:14px 26px;border-top:1px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div style="display:flex;align-items:center;gap:7px">
+              <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_colorida_preta_e_verde.png" alt="" style="height:18px;object-fit:contain" onerror="this.style.display='none'"/>
+              <span style="font-size:10px;color:#aaa;font-family:Nunito,sans-serif">2025 PneuGreen</span>
+            </div>
+            <a href="#" style="color:#009933;font-size:10px;text-decoration:none;font-family:Nunito,sans-serif">Cancelar inscricao</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-MAIL PROMOCAO BRIDGESTONE / FIRESTONE -->
+  <div id="tmpl-em-promo" class="template-content">
+    <div class="template-preview-wrap">
+      <div class="template-iframe-header"><div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div><span>E-mail — Promocao Bridgestone &amp; Firestone</span><button class="btn btn-ghost btn-sm" onclick="copyTmpl('tmpl-em-promo-code')" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button></div>
+      <div style="background:#f0f0f0;padding:20px;font-family:'Nunito',sans-serif" id="tmpl-em-promo-code">
+        <div style="max-width:600px;margin:0 auto">
+
+          <!-- HEADER: fundo vermelho Bridgestone com foto -->
+          <div style="background:#e73335;border-radius:16px 16px 0 0;overflow:hidden;position:relative">
+            <!-- Foto de pneu com overlay vermelho -->
+            <div style="position:relative;height:220px;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Pneus Bridgestone" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.35) saturate(1.2)"/>
+              <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(231,51,53,.85) 0%,rgba(180,20,22,.6) 100%)"></div>
+              <!-- Logos Bridgestone + Firestone sobre a foto -->
+              <div style="position:absolute;top:20px;left:0;right:0;display:flex;justify-content:center;gap:32px;align-items:center">
+                <img src="https://email-editor-production.s3.amazonaws.com/images/1143685/bridgestone-logo.png" alt="Bridgestone" style="height:28px;object-fit:contain;filter:brightness(0) invert(1)" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=color:#fff;font-weight:900;font-size:14px;letter-spacing:-0.5px>BRIDGESTONE</span>')"/>
+                <div style="width:1px;height:24px;background:rgba(255,255,255,.3)"></div>
+                <img src="https://email-editor-production.s3.amazonaws.com/images/1143685/Firestone.svg.png" alt="Firestone" style="height:24px;object-fit:contain;filter:brightness(0) invert(1)" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=color:#fff;font-weight:900;font-size:14px;letter-spacing:-0.5px>FIRESTONE</span>')"/>
+              </div>
+              <!-- Texto principal sobre a foto -->
+              <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 32px 24px">
+                <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-family:'Nunito',sans-serif"><i class="fi fi-rs-gift"></i> Promocao Oficial</div>
+                <h1 style="color:#fff;font-size:26px;font-weight:900;margin:0 0 5px;line-height:1.15;font-family:'Nunito',sans-serif">Voce comprou,<br>agora e so cadastrar!</h1>
+                <p style="color:rgba(255,255,255,.8);font-size:13px;margin:0;font-family:'Nunito',sans-serif;font-weight:600">Concorra a uma viagem ao Japao — Promocao Unidos desde a Origem</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CORPO BRANCO -->
+          <div style="background:#fff;padding:28px 32px">
+
+            <!-- Saudacao + intro -->
+            <p style="font-size:15px;color:#393939;line-height:1.7;margin:0 0 14px;font-family:'Nunito',sans-serif">Ola <strong>*|NOME|*</strong>!</p>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 18px;font-family:'Nunito',sans-serif">Vimos que voce comprou pneus <strong style="color:#0f0f0f">Bridgestone</strong> ou <strong style="color:#0f0f0f">Firestone</strong> na PneuGreen. E temos uma otima noticia: <strong style="color:#0f0f0f">comprando esses itens, voce pode participar</strong> da Promocao Unidos desde a Origem!</p>
+            <p style="font-size:14px;color:#555;line-height:1.7;margin:0 0 22px;font-family:'Nunito',sans-serif">So falta um passo: <strong style="color:#0f0f0f">cadastre sua nota fiscal</strong> no site oficial da promocao para validar suas chances de ganhar.</p>
+
+            <!-- Destaque de premio: borda esquerda vermelha -->
+            <div style="background:#f5f5f5;border-left:4px solid #e73335;border-radius:0 8px 8px 0;padding:16px 18px;margin-bottom:24px">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px">
+                <i class="fi fi-rs-plane" style="color:#e73335;font-size:18px;flex-shrink:0"></i>
+                <span style="font-size:16px;font-weight:800;color:#e73335;font-family:'Nunito',sans-serif">Viagem ao Japao + dezenas de premios!</span>
+              </div>
+              <p style="font-size:13px;color:#555;margin:0;line-height:1.6;font-family:'Nunito',sans-serif">A partir de <strong style="color:#0f0f0f">2 produtos Bridgestone ou Firestone</strong> comprados, voce ja concorre.</p>
+            </div>
+
+            <!-- Premios em jogo: 2 colunas -->
+            <h2 style="font-size:17px;font-weight:800;color:#393939;margin:0 0 14px;text-align:center;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fi fi-rs-trophy" style="color:#e73335"></i> Premios em jogo</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+              <div style="background:#fff5f5;border:1.5px solid #f5c0c0;border-radius:10px;padding:18px;text-align:center">
+                <div style="width:44px;height:44px;background:#e73335;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:20px;color:#fff"><i class="fi fi-rs-plane"></i></div>
+                <p style="font-size:13px;font-weight:800;color:#0f0f0f;margin:0 0 4px;font-family:'Nunito',sans-serif">Viagem ao Japao</p>
+                <p style="font-size:12px;color:#888;margin:0;font-family:'Nunito',sans-serif">ou R$ 40.000,00 em dinheiro</p>
+              </div>
+              <div style="background:#f0faf4;border:1.5px solid #b3dfc0;border-radius:10px;padding:18px;text-align:center">
+                <div style="width:44px;height:44px;background:#009933;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:20px;color:#fff"><i class="fi fi-rs-gift"></i></div>
+                <p style="font-size:13px;font-weight:800;color:#0f0f0f;margin:0 0 4px;font-family:'Nunito',sans-serif">Premios ate R$ 700</p>
+                <p style="font-size:12px;color:#888;margin:0;font-family:'Nunito',sans-serif">todos os dias</p>
+              </div>
+            </div>
+
+            <!-- Como participar: 3 passos -->
+            <h2 style="font-size:16px;font-weight:800;color:#393939;margin:0 0 14px;font-family:'Nunito',sans-serif">Como participar em 3 passos:</h2>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:26px">
+              <div style="display:flex;align-items:flex-start;gap:13px">
+                <div style="width:32px;height:32px;background:#e73335;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:900;color:#fff;font-family:'Nunito',sans-serif">1</div>
+                <div style="padding-top:5px">
+                  <span style="font-size:13px;color:#555;font-family:'Nunito',sans-serif">Acesse <strong style="color:#0f0f0f"><a href="https://promocaobridgestone.com.br/?utm_source=pneugreen&utm_medium=email&utm_campaign=promocao_unidos_desde_a_origem" target="_blank" style="color:#e73335;text-decoration:none">promocaobridgestone.com.br</a></strong></span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:13px">
+                <div style="width:32px;height:32px;background:#e73335;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:900;color:#fff;font-family:'Nunito',sans-serif">2</div>
+                <div style="padding-top:5px">
+                  <span style="font-size:13px;color:#555;font-family:'Nunito',sans-serif">Cadastre seus dados e o <strong style="color:#0f0f0f">numero da nota fiscal</strong></span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:13px">
+                <div style="width:32px;height:32px;background:#009933;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;color:#fff"><i class="fi fi-rs-check"></i></div>
+                <div style="padding-top:5px">
+                  <span style="font-size:13px;color:#555;font-family:'Nunito',sans-serif">Pronto! Voce ja esta <strong style="color:#009933">concorrendo</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA button -->
+            <div style="text-align:center;margin-bottom:22px">
+              <a href="https://promocaobridgestone.com.br/?utm_source=pneugreen&utm_medium=email&utm_campaign=promocao_unidos_desde_a_origem" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#009933;color:#fff;padding:14px 32px;border-radius:40px;font-size:15px;font-weight:700;text-decoration:none;letter-spacing:.5px;font-family:'Nunito',sans-serif"><i class="fi fi-rs-document"></i> CADASTRAR NOTA FISCAL</a>
+            </div>
+
+            <!-- Nota de rodape legal -->
+            <div style="background:#f8f8f8;border-radius:8px;padding:13px 15px;margin-bottom:0">
+              <p style="font-size:10px;color:#888;line-height:1.6;margin:0;font-family:'Nunito',sans-serif">*Sao Produtos Participantes desta Promocao os pneus da marca Bridgestone com aros 14, 15, 16, 17, 18+ da categoria passeio e os pneus da marca Firestone com aros 14, 15, 16, 17 e 18 da categoria passeio relacionados no site oficial da Promocao www.promocaobridgestone.com.br. Nao serao considerados como Produtos Participantes os pneus da marca Firestone pertencentes a linha F-600, ainda que atendam aos requisitos de aro e categoria indicados.</p>
+            </div>
+          </div>
+
+          <!-- RODAPE -->
+          <div style="background:#f8f9fa;border-top:1px solid #e0e0e0;padding:18px 32px">
+            <!-- Logo PneuGreen + redes sociais -->
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+              <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_preta_e_verde.png" alt="PneuGreen" style="height:24px;object-fit:contain" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=font-family:Nunito,sans-serif;color:#009933;font-weight:900;font-size:14px>PneuGreen</span>')"/>
+              <div style="display:flex;gap:10px">
+                <a href="https://www.facebook.com/pneugreen.com.br/" target="_blank" style="width:28px;height:28px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none"><i class="fi fi-rs-share" style="font-size:12px;color:#555"></i></a>
+                <a href="https://www.instagram.com/pneugreen_" target="_blank" style="width:28px;height:28px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none"><i class="fi fi-rs-camera" style="font-size:12px;color:#555"></i></a>
+                <a href="https://www.linkedin.com/company/pneugreen01/" target="_blank" style="width:28px;height:28px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none"><i class="fi fi-rs-link" style="font-size:12px;color:#555"></i></a>
+                <a href="https://api.whatsapp.com/send/?phone=37998464172" target="_blank" style="width:28px;height:28px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none"><i class="fi fi-rs-phone" style="font-size:12px;color:#555"></i></a>
+              </div>
+            </div>
+            <p style="font-size:10px;color:#aaa;text-align:center;margin:0;line-height:1.7;font-family:'Nunito',sans-serif">Enviado por PneuGreen &mdash; Rua Joaquim Gomes Bernardes, 31, Bairro Marilia | Lagoa da Prata/MG<br><a href="https://app.rdstation.email/descadastrar/*UUID*" style="color:#009933;text-decoration:none;font-family:'Nunito',sans-serif">Cancelar inscricao</a> &nbsp;|&nbsp; <a href="https://app.rdstation.email/mail/*UUID*" style="color:#009933;text-decoration:none;font-family:'Nunito',sans-serif">Ver como pagina web</a></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-MAIL 2 NEWSLETTER -->
+  <div id="tmpl-em2" class="template-content">
+    <div class="template-preview-wrap">
+      <div class="template-iframe-header"><div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div><span>E-mail — Newsletter Semanal</span><button class="btn btn-ghost btn-sm" onclick="copyTmpl('tmpl-em2-code')" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button></div>
+      <div style="background:#f8f9fa;padding:20px;font-family:var(--ff)" id="tmpl-em2-code">
+        <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e0e0e0">
+          <!-- HEADER DE IMPACTO -->
+          <div style="background:#0f0f0f;padding:0;position:relative;overflow:hidden">
+            <!-- Faixa superior com logo + label -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 26px;border-bottom:1px solid rgba(255,255,255,.06)">
+              <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_branca_e_verde.png" alt="PneuGreen" style="height:26px;object-fit:contain" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=font-family:Nunito,sans-serif;color:#009933;font-weight:900;font-size:15px>PneuGreen</span>')"/>
+              <span style="font-size:10px;color:rgba(255,255,255,.3);font-family:Nunito,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1px">Newsletter Semanal</span>
+            </div>
+            <!-- Hero banner com foto + overlay verde -->
+            <div style="position:relative;height:140px;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80" alt="" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.38)"/>
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,18,6,.6),rgba(0,102,34,.45))"></div>
+              <div style="position:absolute;inset:0;padding:16px 26px;display:flex;flex-direction:column;justify-content:flex-end;position:absolute">
+                <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(0,204,68,.18);border:1px solid rgba(0,204,68,.35);color:#00cc44;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px;font-family:Nunito,sans-serif;width:fit-content"><i class="fi fi-rs-calendar"></i> Semana de 28 Abr — 04 Mai 2025</div>
+                <h1 style="color:#fff;font-size:18px;font-weight:900;margin:0;line-height:1.2;font-family:Nunito,sans-serif;max-width:320px">O que voce nao pode perder esta semana</h1>
+              </div>
+            </div>
+          </div>
+          <div style="padding:26px">
+            <div style="border-left:3px solid #009933;padding-left:13px;margin-bottom:16px">
+              <span style="display:inline-block;background:#009933;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;margin-bottom:4px;font-family:Nunito,sans-serif">Destaque</span>
+              <h3 style="font-size:14px;font-weight:800;margin-bottom:3px;color:#0f0f0f;font-family:Nunito,sans-serif">Michelin vs Bridgestone: O Teste Definitivo</h3>
+              <p style="font-size:11px;color:#616161;line-height:1.6;margin-bottom:6px;font-family:Nunito,sans-serif">Os dois campeoes frente a frente. O resultado vai te surpreender.</p>
+              <a href="#" style="color:#009933;font-size:11px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-family:Nunito,sans-serif"><i class="fi fi-rs-arrow-right"></i> Ler artigo</a>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px">
+              <div style="background:#f8f9fa;border-radius:8px;padding:13px"><h4 style="font-size:12px;font-weight:800;margin-bottom:3px;font-family:Nunito,sans-serif">Calibragem no Inverno</h4><p style="font-size:10px;color:#888;margin-bottom:7px;font-family:Nunito,sans-serif">Dicas para a estacao</p><a href="#" style="color:#009933;font-size:10px;font-weight:700;text-decoration:none;font-family:Nunito,sans-serif">Ler mais</a></div>
+              <div style="background:#f8f9fa;border-radius:8px;padding:13px"><h4 style="font-size:12px;font-weight:800;margin-bottom:3px;font-family:Nunito,sans-serif">Top 5 Off-Road 2025</h4><p style="font-size:10px;color:#888;margin-bottom:7px;font-family:Nunito,sans-serif">Melhores para aventuras</p><a href="#" style="color:#009933;font-size:10px;font-weight:700;text-decoration:none;font-family:Nunito,sans-serif">Ver lista</a></div>
+            </div>
+            <a href="#" style="display:flex;align-items:center;justify-content:center;gap:6px;background:#009933;color:#fff;padding:11px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;font-family:Nunito,sans-serif"><i class="fi fi-rs-arrow-right"></i> Ver Todos os Artigos da Semana</a>
+          </div>
+          <div style="background:#f8f9fa;padding:14px 26px;border-top:1px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div style="display:flex;align-items:center;gap:7px">
+              <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_icone_colorida_preta_e_verde.png" alt="" style="height:18px;object-fit:contain" onerror="this.style.display='none'"/>
+              <span style="font-size:10px;color:#aaa;font-family:Nunito,sans-serif">2025 PneuGreen</span>
+            </div>
+            <a href="#" style="color:#009933;font-size:10px;text-decoration:none;font-family:Nunito,sans-serif">Cancelar inscricao</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP 1 LATERAL -->
+  <div id="tmpl-pop1" class="template-content">
+    <div class="template-preview-wrap">
+      <div class="template-iframe-header"><div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div><span>Popup Lateral de Captura</span><button class="btn btn-ghost btn-sm" onclick="copyTmpl('tmpl-pop1-code')" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button></div>
+      <div style="background:#f8f9fa;padding:32px;min-height:260px;display:flex;align-items:center;justify-content:flex-end;font-family:var(--ff)" id="tmpl-pop1-code">
+        <div style="max-width:280px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.14);border:1px solid #e0e0e0">
+          <div style="background:#009933;padding:16px 18px;position:relative">
+            <button style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,.2);border:none;color:#fff;width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center"><i class="fi fi-rs-cross"></i></button>
+            <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_mono_branca.png" alt="PneuGreen" style="height:20px;object-fit:contain;margin-bottom:8px" onerror="this.style.display='none'"/>
+            <h3 style="color:#fff;font-size:14px;font-weight:900;margin-bottom:2px">Guia Gratis</h3>
+            <p style="color:rgba(255,255,255,.72);font-size:11px">Dicas de pneus no seu e-mail</p>
+          </div>
+          <div style="padding:16px">
+            <input type="email" placeholder="seu@email.com" style="width:100%;padding:8px 11px;border:2px solid #eeeeee;border-radius:7px;font-size:12px;margin-bottom:8px;font-family:var(--ff);outline:none"/>
+            <button style="width:100%;background:#009933;color:#fff;border:none;padding:10px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--ff);display:flex;align-items:center;justify-content:center;gap:5px"><i class="fi fi-rs-download"></i> Quero Receber!</button>
+            <p style="font-size:9px;color:#aaa;text-align:center;margin-top:6px">Sem spam. Cancele quando quiser.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP 2 CENTRAL -->
+  <div id="tmpl-pop2" class="template-content">
+    <div class="template-preview-wrap">
+      <div class="template-iframe-header"><div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#febc2e"></div><div class="dot" style="background:#28c840"></div></div><span>Popup Central com Foto</span><button class="btn btn-ghost btn-sm" onclick="copyTmpl('tmpl-pop2-code')" style="font-size:10px;padding:3px 10px"><i class="fi fi-rs-copy"></i> Copiar</button></div>
+      <div style="background:rgba(0,0,0,.55);min-height:380px;display:flex;align-items:center;justify-content:center;padding:20px;font-family:var(--ff)" id="tmpl-pop2-code">
+        <div style="max-width:440px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.35)">
+          <!-- HEADER COM FOTO + OVERLAY -->
+          <div style="position:relative;height:180px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Pneus" style="width:100%;height:100%;object-fit:cover;display:block"/>
+            <!-- Overlay gradiente -->
+            <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(6,18,6,.8) 100%)"></div>
+            <!-- Botao fechar -->
+            <button style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.2);color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)"><i class="fi fi-rs-cross"></i></button>
+            <!-- Logo + texto sobre a foto -->
+            <div style="position:absolute;bottom:16px;left:20px;right:20px">
+              <img src="https://raw.githubusercontent.com/Design-8DHubify/design-system--Pneugreen-/main/Logos/logo_principal_colorida_branca_e_verde.png" alt="PneuGreen" style="height:22px;object-fit:contain;display:block;margin-bottom:7px" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=font-family:Nunito,sans-serif;color:#009933;font-weight:900;font-size:14px>PneuGreen</span>')"/>
+              <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(0,204,68,.25);border:1px solid rgba(0,204,68,.45);color:#00cc44;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px;font-family:Nunito,sans-serif"><i class="fi fi-rs-leaf"></i> Guia Gratuito 2025</div>
+            </div>
+          </div>
+          <!-- CORPO -->
+          <div style="padding:22px 24px 20px;text-align:center">
+            <h2 style="font-size:17px;font-weight:900;color:#0f0f0f;margin-bottom:8px;line-height:1.3;font-family:Nunito,sans-serif">Baixe o Guia Completo de Pneus 2025</h2>
+            <p style="font-size:12px;color:#616161;line-height:1.7;margin-bottom:18px;font-family:Nunito,sans-serif">Aprenda a escolher, calibrar e economizar na proxima troca. Material gratuito, sem enrolacao.</p>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
+              <input type="email" placeholder="seu@email.com" style="width:100%;padding:10px 13px;border:2px solid #eeeeee;border-radius:8px;font-size:13px;font-family:Nunito,sans-serif;outline:none;text-align:center" onfocus="this.style.borderColor='#009933'" onblur="this.style.borderColor='#eeeeee'"/>
+              <button style="width:100%;background:#009933;color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;display:flex;align-items:center;justify-content:center;gap:7px" onmouseover="this.style.background='#006622'" onmouseout="this.style.background='#009933'"><i class="fi fi-rs-download"></i> Baixar Gratis Agora</button>
+            </div>
+            <button style="background:none;border:none;color:#aaa;font-size:11px;cursor:pointer;font-family:Nunito,sans-serif">Nao, obrigado</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ESPACAMENTO -->
+<section class="section" id="sec-espaco">
+  <div class="section-header"><div class="section-tag">15 Referencia</div><h2 class="section-title">Espacamento e Grid</h2></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px">
+    <div>
+      <h3 style="font-size:13px;font-weight:700;margin-bottom:12px">Escala de Espacamento</h3>
+      <div class="spacing-row"><div class="spacing-label">4px</div><div class="spacing-bar" style="width:4px"></div><div class="spacing-value">icone + texto</div></div>
+      <div class="spacing-row"><div class="spacing-label">8px</div><div class="spacing-bar" style="width:8px"></div><div class="spacing-value">gap entre badges</div></div>
+      <div class="spacing-row"><div class="spacing-label">16px</div><div class="spacing-bar" style="width:16px"></div><div class="spacing-value">padding de card</div></div>
+      <div class="spacing-row"><div class="spacing-label">24px</div><div class="spacing-bar" style="width:24px"></div><div class="spacing-value">padding de secao</div></div>
+      <div class="spacing-row"><div class="spacing-label">40px</div><div class="spacing-bar" style="width:40px"></div><div class="spacing-value">padding de hero</div></div>
+      <div class="spacing-row"><div class="spacing-label">64px</div><div class="spacing-bar" style="width:64px"></div><div class="spacing-value">margin entre secoes</div></div>
+    </div>
+    <div>
+      <h3 style="font-size:13px;font-weight:700;margin-bottom:12px">Grid de 12 Colunas</h3>
+      <div class="grid-demo">
+        <div class="grid-col" style="grid-column:span 12;background:rgba(0,153,51,.2)">12/12 Hero</div>
+        <div class="grid-col" style="grid-column:span 9;background:rgba(0,153,51,.15)">9/12</div>
+        <div class="grid-col" style="grid-column:span 3">3/12</div>
+        <div class="grid-col" style="grid-column:span 4">4/12</div><div class="grid-col" style="grid-column:span 4">4/12</div><div class="grid-col" style="grid-column:span 4">4/12</div>
+        <div class="grid-col" style="grid-column:span 6">6/12</div><div class="grid-col" style="grid-column:span 6">6/12</div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast"><i class="fi fi-rs-check-circle"></i><span id="toastMsg">Copiado!</span></div>
+<script>
+/* SIDEBAR */
+document.getElementById('hamburgerBtn').addEventListener('click',function(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('show');});
+document.getElementById('sidebarOverlay').addEventListener('click',function(){document.getElementById('sidebar').classList.remove('open');this.classList.remove('show');});
+/* SCROLLSPY */
+var navLinks=document.querySelectorAll('.nav-link[data-target]');
+navLinks.forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();var el=document.getElementById(this.dataset.target);if(el)el.scrollIntoView({behavior:'smooth'});});});
+window.addEventListener('scroll',function(){var cur='';document.querySelectorAll('section[id],div[id^="sec-"]').forEach(function(s){if(window.scrollY>=s.offsetTop-100)cur=s.id;});navLinks.forEach(function(l){l.classList.toggle('active',l.dataset.target===cur);});},{passive:true});
+/* TOAST */
+function showToast(msg){var t=document.getElementById('toast'),m=document.getElementById('toastMsg');if(!t||!m)return;m.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
+/* COPY COLOR */
+function copyColor(hex,name){if(navigator.clipboard){navigator.clipboard.writeText(hex).then(function(){showToast('Copiado: '+hex);});}else{var ta=document.createElement('textarea');ta.value=hex;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Copiado: '+hex);}}
+/* ACCORDION */
+function toggleAcc(btn){var body=btn.nextElementSibling;var isOpen=btn.classList.contains('open');document.querySelectorAll('.accordion-trigger.open').forEach(function(b){b.classList.remove('open');var nb=b.nextElementSibling;if(nb)nb.classList.remove('open');});if(!isOpen){btn.classList.add('open');if(body)body.classList.add('open');}}
+/* TABS */
+function switchTab(btn,id){var sec=btn.closest('section')||document;sec.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});sec.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var p=document.getElementById(id);if(p)p.classList.add('active');}
+/* CARROSSEL DINAMICO */
+function buildCarousel(){
+  var dCols=parseInt(document.getElementById('carDesktop').value)||3;
+  var mCols=parseInt(document.getElementById('carMobile').value)||1;
+  var slides=[
+    {icon:'fi-rs-car-mechanic',title:'Calibragem Perfeita',desc:'Pressao correta economiza ate 4% de combustivel.'},
+    {icon:'fi-rs-star',title:'Michelin Pilot Sport',desc:'Pneu de alta performance mais vendido em 2025.'},
+    {icon:'fi-rs-mountain',title:'Off-Road 2025',desc:'Os 5 melhores pneus para trilhas e aventuras.'},
+    {icon:'fi-rs-shield-check',title:'Seguranca em Foco',desc:'Pneus gastos aumentam 30% o risco de aquaplanagem.'},
+    {icon:'fi-rs-road',title:'Durabilidade',desc:'Aumente a vida util dos pneus ate 40% com estas dicas.'},
+    {icon:'fi-rs-wrench',title:'Rodizio Correto',desc:'Faca a cada 10.000 km para desgaste uniforme.'},
+  ];
+  var uid='car'+Date.now();
+  var sHTML=slides.map(function(s){
+    return '<div style="min-width:calc(100%/'+dCols+');padding:22px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:9px;box-sizing:border-box;flex-shrink:0">'
+      +'<i class="fi '+s.icon+'" style="font-size:36px;color:#009933"></i>'
+      +'<h3 style="font-size:14px;font-weight:800">'+s.title+'</h3>'
+      +'<p style="font-size:11px;color:#616161;line-height:1.6;max-width:200px">'+s.desc+'</p></div>';
+  }).join('');
+  var html='<style>'
+    +'.car-wrap-'+uid+'{position:relative;border-radius:12px;border:1px solid #e0e0e0;background:#fff;overflow:hidden}'
+    +'.car-overflow-'+uid+'{overflow:hidden}'
+    +'.car-track-'+uid+'{display:flex;transition:transform .4s}'
+    +'@media(max-width:600px){.car-track-'+uid+' > div{min-width:calc(100%/'+mCols+') !important}}'
+    +'.car-btn-'+uid+'{position:absolute;top:50%;transform:translateY(-50%);background:#fff;border:2px solid #e0e0e0;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:2;transition:all .2s}'
+    +'.car-btn-'+uid+':hover{border-color:#009933;color:#009933}'
+    +'.car-dots-'+uid+'{display:flex;justify-content:center;gap:5px;padding:8px}'
+    +'.car-dot-'+uid+'{width:7px;height:7px;border-radius:50%;background:#e0e0e0;cursor:pointer;border:none;transition:all .2s}'
+    +'.car-dot-'+uid+'.on{background:#009933;width:16px;border-radius:4px}'
+    +'</style>'
+    +'<div class="car-wrap-'+uid+'" id="'+uid+'">'
+    +'<div class="car-overflow-'+uid+'"><div class="car-track-'+uid+'">'+sHTML+'</div></div>'
+    +'<button class="car-btn-'+uid+'" style="left:7px"><i class="fi fi-rs-angle-left"></i></button>'
+    +'<button class="car-btn-'+uid+'" style="right:7px"><i class="fi fi-rs-angle-right"></i></button>'
+    +'</div>'
+    +'<div class="car-dots-'+uid+'" id="'+uid+'-dots"></div>';
+  var ct=document.getElementById('carouselContainer');
+  if(!ct)return;
+  ct.innerHTML=html;
+  (function(){
+    var el=document.getElementById(uid);
+    var dotsEl=document.getElementById(uid+'-dots');
+    if(!el||!dotsEl)return;
+    var track=el.querySelector('.car-track-'+uid);
+    var items=track.querySelectorAll('div');
+    var cols=window.innerWidth<=600?mCols:dCols;
+    var total=items.length;
+    var maxIdx=Math.max(0,total-cols);
+    var idx=0;
+    for(var i=0;i<=maxIdx;i++){
+      (function(n){var d=document.createElement('button');d.className='car-dot-'+uid+(n===0?' on':'');d.addEventListener('click',function(){go(n);});dotsEl.appendChild(d);})(i);
+    }
+    function go(n){idx=Math.max(0,Math.min(n,maxIdx));var pct=(idx/total)*100;track.style.transform='translateX(-'+pct+'%)';dotsEl.querySelectorAll('.car-dot-'+uid).forEach(function(d,i){d.classList.toggle('on',i===idx);});}
+    var btns=el.querySelectorAll('.car-btn-'+uid);
+    btns[0].addEventListener('click',function(){go(idx-1);});
+    btns[1].addEventListener('click',function(){go(idx+1);});
+    window.addEventListener('resize',function(){var nc=window.innerWidth<=600?mCols:dCols;if(nc!==cols){cols=nc;maxIdx=Math.max(0,total-cols);go(0);}});
+  })();
+}
+buildCarousel();
+
+/* BUILDER */
+var bItems=[
+  {title:'Pneus para Carro',desc:'Guia completo de calibragem e escolha.',icon:'fi-rs-car'},
+  {title:'Off-Road 2025',desc:'Melhores modelos para terrenos extremos.',icon:'fi-rs-mountain'},
+  {title:'Marcas Premium',desc:'Compare Michelin, Bridgestone e Pirelli.',icon:'fi-rs-star'},
+];
+function bRenderList(){
+  var list=document.getElementById('bItemsList');
+  if(!list)return;
+  list.innerHTML='';
+  var items=document.createElement('div');
+  items.className='builder-items-list';
+  bItems.forEach(function(item,idx){
+    var row=document.createElement('div');
+    row.className='builder-item-row';
+    row.innerHTML='<button class="btn-remove-item" onclick="bRemove('+idx+')"><i class="fi fi-rs-cross"></i></button>'
+      +'<input type="text" value="'+item.title+'" placeholder="Titulo" oninput="bItems['+idx+'].title=this.value;bRender()"/>'
+      +'<input type="text" value="'+item.desc+'" placeholder="Descricao" oninput="bItems['+idx+'].desc=this.value;bRender()"/>'
+      +'<input type="text" value="'+item.icon+'" placeholder="Icone fi-rs-..." oninput="bItems['+idx+'].icon=this.value;bRender()"/>';
+    items.appendChild(row);
+  });
+  list.appendChild(items);
+}
+function bAddItem(){bItems.push({title:'Novo Item',desc:'Descricao do item.',icon:'fi-rs-leaf'});bRenderList();bRender();}
+function bRemove(idx){bItems.splice(idx,1);bRenderList();bRender();}
+
+function bRender(){
+  var type=document.getElementById('bType').value;
+  var color=document.getElementById('bColor').value||'#009933';
+  var cta=document.getElementById('bCTA').value||'Saiba Mais';
+  var url=document.getElementById('bURL').value||'#';
+  var target=document.getElementById('bTarget').value||'_self';
+  var dCols=parseInt((document.getElementById('bDesktopCols')||{}).value)||3;
+  var mCols=parseInt((document.getElementById('bMobileCols')||{}).value)||1;
+  // Show/hide cols fields only for cards and carousel
+  var showCols=(type==='cards'||type==='carousel');
+  var cf=document.getElementById('bColsField');
+  var mcf=document.getElementById('bMobileColsField');
+  if(cf)cf.style.display=showCols?'':'none';
+  if(mcf)mcf.style.display=showCols?'':'none';
+  var uid='pg'+Date.now();
+  var css='',html='',js='';
+
+  if(type==='cards'){
+    css='.ds-pneugreen-cards{display:grid;grid-template-columns:repeat('+dCols+',1fr);gap:18px;font-family:"Nunito",sans-serif}@media(max-width:600px){.ds-pneugreen-cards{grid-template-columns:repeat('+mCols+',1fr)}}.ds-pneugreen-card{background:#fff;border-radius:12px;border:1px solid #e0e0e0;overflow:hidden;transition:box-shadow .2s}.ds-pneugreen-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1)}.ds-pneugreen-card-icon{padding:22px;background:#f0faf4;text-align:center;font-size:36px;color:'+color+'}.ds-pneugreen-card-body{padding:18px}.ds-pneugreen-card-body h3{font-size:14px;font-weight:800;margin-bottom:5px;color:#0f0f0f}.ds-pneugreen-card-body p{font-size:12px;color:#616161;line-height:1.6;margin-bottom:10px}.ds-pneugreen-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;background:'+color+';color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none}';
+    html='<div class="ds-pneugreen-cards">'+bItems.map(function(i){return'<div class="ds-pneugreen-card"><div class="ds-pneugreen-card-icon"><i class="fi '+i.icon+'"></i></div><div class="ds-pneugreen-card-body"><h3>'+i.title+'</h3><p>'+i.desc+'</p><a href="'+url+'" target="'+target+'" class="ds-pneugreen-btn">'+cta+'</a></div></div>';}).join('')+'</div>';
+    js='';
+
+  }else if(type==='accordion'){
+    css='.ds-pneugreen-acc{border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;font-family:"Nunito",sans-serif}.ds-pneugreen-acc-item{border-bottom:1px solid #e0e0e0}.ds-pneugreen-acc-item:last-child{border-bottom:none}.ds-pneugreen-acc-btn{width:100%;display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:#fff;border:none;font-family:"Nunito",sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:#0f0f0f}.ds-pneugreen-acc-btn.open{background:#f0faf4;color:'+color+'}.ds-pneugreen-acc-body{max-height:0;overflow:hidden;transition:max-height .35s}.ds-pneugreen-acc-body.open{max-height:300px}.ds-pneugreen-acc-inner{padding:4px 15px 15px;font-size:12px;color:#616161;line-height:1.7}';
+    html='<div class="ds-pneugreen-acc" id="'+uid+'">'+bItems.map(function(i,n){return'<div class="ds-pneugreen-acc-item"><button class="ds-pneugreen-acc-btn" data-n="'+n+'"><span><i class="fi '+i.icon+'" style="margin-right:6px;color:'+color+'"></i>'+i.title+'</span><span>+</span></button><div class="ds-pneugreen-acc-body" data-b="'+n+'"><div class="ds-pneugreen-acc-inner">'+i.desc+'</div></div></div>';}).join('')+'</div>';
+    js='(function(){var el=document.getElementById("'+uid+'");if(!el)return;el.querySelectorAll(".ds-pneugreen-acc-btn").forEach(function(btn){btn.addEventListener("click",function(){var n=this.dataset.n;var isOpen=this.classList.contains("open");el.querySelectorAll(".ds-pneugreen-acc-btn").forEach(function(b){b.classList.remove("open");});el.querySelectorAll(".ds-pneugreen-acc-body").forEach(function(b){b.classList.remove("open");});if(!isOpen){this.classList.add("open");var body=el.querySelector("[data-b=\'"+n+"\']");if(body)body.classList.add("open");}});});})();';
+
+  }else if(type==='tabs'){
+    css='.ds-pneugreen-tabs{font-family:"Nunito",sans-serif}.ds-pneugreen-tabs-nav{display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:14px}.ds-pneugreen-tab-btn{padding:8px 15px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:"Nunito",sans-serif;font-size:13px;font-weight:700;color:#888;cursor:pointer}.ds-pneugreen-tab-btn.active{color:'+color+';border-bottom-color:'+color+'}.ds-pneugreen-tab-panel{display:none;padding:14px;background:#f0faf4;border-radius:8px;font-size:12px;line-height:1.7;color:#393939}.ds-pneugreen-tab-panel.active{display:block}';
+    html='<div class="ds-pneugreen-tabs" id="'+uid+'"><div class="ds-pneugreen-tabs-nav">'+bItems.map(function(i,n){return'<button class="ds-pneugreen-tab-btn'+(n===0?' active':'')+'" data-tab="'+uid+'t'+n+'"><i class="fi '+i.icon+'" style="margin-right:4px"></i>'+i.title+'</button>';}).join('')+'</div>'+bItems.map(function(i,n){return'<div class="ds-pneugreen-tab-panel'+(n===0?' active':'')+'" id="'+uid+'t'+n+'"><p>'+i.desc+'</p><a href="'+url+'" target="'+target+'" style="color:'+color+';font-weight:700;font-size:12px;text-decoration:none">'+cta+' &rarr;</a></div>';}).join('')+'</div>';
+    js='(function(){var el=document.getElementById("'+uid+'");if(!el)return;el.querySelectorAll(".ds-pneugreen-tab-btn").forEach(function(btn){btn.addEventListener("click",function(){el.querySelectorAll(".ds-pneugreen-tab-btn").forEach(function(b){b.classList.remove("active");});el.querySelectorAll(".ds-pneugreen-tab-panel").forEach(function(p){p.classList.remove("active");});this.classList.add("active");var p=document.getElementById(this.dataset.tab);if(p)p.classList.add("active");});});})();';
+
+  }else if(type==='carousel'){
+    css='.ds-pneugreen-carousel{position:relative;overflow:hidden;border-radius:12px;border:1px solid #e0e0e0;background:#fff;font-family:"Nunito",sans-serif}.ds-pneugreen-car-track{display:flex;transition:transform .4s}.ds-pneugreen-car-slide{min-width:calc(100%/'+dCols+');padding:28px;text-align:center;box-sizing:border-box;flex-shrink:0}@media(max-width:600px){.ds-pneugreen-car-slide{min-width:calc(100%/'+mCols+')}}.ds-pneugreen-car-slide h3{font-size:15px;font-weight:800;margin-bottom:6px}.ds-pneugreen-car-slide p{font-size:12px;color:#616161;margin-bottom:13px;line-height:1.6}.ds-pneugreen-car-btn{position:absolute;top:50%;transform:translateY(-50%);background:#fff;border:2px solid #e0e0e0;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:2}.ds-pneugreen-car-prev{left:7px}.ds-pneugreen-car-next{right:7px}.ds-pneugreen-car-dots{display:flex;justify-content:center;gap:5px;padding:8px}.ds-pneugreen-car-dot{width:7px;height:7px;border-radius:50%;background:#e0e0e0;cursor:pointer;border:none}.ds-pneugreen-car-dot.active{background:'+color+';width:16px;border-radius:4px}.ds-pneugreen-btn-a{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:'+color+';color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none}';
+    html='<div class="ds-pneugreen-carousel" id="'+uid+'"><div style="overflow:hidden"><div class="ds-pneugreen-car-track">'+bItems.map(function(i){return'<div class="ds-pneugreen-car-slide"><div style="font-size:34px;margin-bottom:9px;color:'+color+'"><i class="fi '+i.icon+'"></i></div><h3>'+i.title+'</h3><p>'+i.desc+'</p><a href="'+url+'" target="'+target+'" class="ds-pneugreen-btn-a">'+cta+'</a></div>';}).join('')+'</div></div><button class="ds-pneugreen-car-btn ds-pneugreen-car-prev">&lsaquo;</button><button class="ds-pneugreen-car-btn ds-pneugreen-car-next">&rsaquo;</button></div><div class="ds-pneugreen-car-dots" id="'+uid+'-d"></div>';
+    var dC=dCols,mC=mCols;
+    js='(function(){var c=document.getElementById("'+uid+'");if(!c)return;var track=c.querySelector(".ds-pneugreen-car-track");var slides=c.querySelectorAll(".ds-pneugreen-car-slide");var dotsEl=document.getElementById("'+uid+'-d");var dCols='+dC+',mCols='+mC+';var cols=window.innerWidth<=600?mCols:dCols;var total=slides.length;var maxIdx=Math.max(0,total-cols);var idx=0;for(var i=0;i<=maxIdx;i++){(function(n){var d=document.createElement("button");d.className="ds-pneugreen-car-dot"+(n===0?" active":"");d.addEventListener("click",function(){go(n);});dotsEl.appendChild(d);})(i);}function go(n){idx=Math.max(0,Math.min(n,maxIdx));var pct=(idx/total)*100;track.style.transform="translateX(-"+pct+"%)";c.querySelectorAll(".ds-pneugreen-car-dot").forEach(function(d,i){d.classList.toggle("active",i===idx);});}c.querySelector(".ds-pneugreen-car-prev").addEventListener("click",function(){go(idx-1);});c.querySelector(".ds-pneugreen-car-next").addEventListener("click",function(){go(idx+1);});window.addEventListener("resize",function(){var nc=window.innerWidth<=600?mCols:dCols;if(nc!==cols){cols=nc;maxIdx=Math.max(0,total-cols);go(0);}});})();';
+
+  }else if(type==='timeline'){
+    css='.ds-pneugreen-timeline{font-family:"Nunito",sans-serif;position:relative;padding-left:30px}.ds-pneugreen-timeline::before{content:"";position:absolute;left:11px;top:0;bottom:0;width:2px;background:'+color+';opacity:.28}.ds-pneugreen-tl-item{position:relative;margin-bottom:22px}.ds-pneugreen-tl-item::before{content:"";position:absolute;left:-23px;top:4px;width:11px;height:11px;border-radius:50%;background:'+color+';border:2px solid #fff;box-shadow:0 0 0 2px '+color+'}.ds-pneugreen-tl-meta{font-size:10px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;display:flex;align-items:center;gap:4px}.ds-pneugreen-tl-item h3{font-size:13px;font-weight:800;margin-bottom:3px;color:#0f0f0f}.ds-pneugreen-tl-item p{font-size:11px;color:#616161;line-height:1.6}';
+    html='<div class="ds-pneugreen-timeline">'+bItems.map(function(i,n){return'<div class="ds-pneugreen-tl-item"><div class="ds-pneugreen-tl-meta"><i class="fi '+i.icon+'"></i>Passo '+(n+1)+'</div><h3>'+i.title+'</h3><p>'+i.desc+'</p></div>';}).join('')+'</div>';
+    js='';
+
+  }else if(type==='pricing'){
+    css='.ds-pneugreen-pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;font-family:"Nunito",sans-serif}.ds-pneugreen-plan{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:22px;text-align:center;transition:border-color .2s}.ds-pneugreen-plan.featured{border-color:'+color+';box-shadow:0 4px 20px rgba(0,0,0,.1)}.ds-pneugreen-plan-badge{display:inline-block;background:'+color+';color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;text-transform:uppercase;margin-bottom:12px}.ds-pneugreen-plan-icon{font-size:30px;margin-bottom:10px;color:'+color+'}.ds-pneugreen-plan h3{font-size:14px;font-weight:900;margin-bottom:5px;color:#0f0f0f}.ds-pneugreen-plan p{font-size:11px;color:#888;line-height:1.6;margin-bottom:14px}.ds-pneugreen-plan-btn{display:block;padding:9px;border-radius:7px;font-size:12px;font-weight:700;text-decoration:none;text-align:center;background:'+color+';color:#fff}';
+    html='<div class="ds-pneugreen-pricing">'+bItems.map(function(i,n){return'<div class="ds-pneugreen-plan'+(n===1?' featured':'')+'">'+(n===1?'<div class="ds-pneugreen-plan-badge">Recomendado</div><br>':'')+'<div class="ds-pneugreen-plan-icon"><i class="fi '+i.icon+'"></i></div><h3>'+i.title+'</h3><p>'+i.desc+'</p><a href="'+url+'" target="'+target+'" class="ds-pneugreen-plan-btn">'+cta+'</a></div>';}).join('')+'</div>';
+    js='';
+
+  }else if(type==='testimonials'){
+    css='.ds-pneugreen-testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;font-family:"Nunito",sans-serif}.ds-pneugreen-testi{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:20px}.ds-pneugreen-testi-stars{display:flex;gap:2px;margin-bottom:9px;color:#f0a500;font-size:12px}.ds-pneugreen-testi blockquote{font-size:12px;color:#616161;line-height:1.7;margin-bottom:13px;font-style:italic}.ds-pneugreen-testi-author{display:flex;align-items:center;gap:8px}.ds-pneugreen-testi-avatar{width:30px;height:30px;border-radius:50%;background:'+color+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}.ds-pneugreen-testi-name{font-size:12px;font-weight:700;color:#0f0f0f}.ds-pneugreen-testi-role{font-size:10px;color:#888}';
+    html='<div class="ds-pneugreen-testimonials">'+bItems.map(function(i){var init=i.title.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase();return'<div class="ds-pneugreen-testi"><div class="ds-pneugreen-testi-stars"><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i><i class="fi fi-rs-star"></i></div><blockquote>'+i.desc+'</blockquote><div class="ds-pneugreen-testi-author"><div class="ds-pneugreen-testi-avatar">'+init+'</div><div><div class="ds-pneugreen-testi-name">'+i.title+'</div><div class="ds-pneugreen-testi-role">Cliente PneuGreen</div></div></div></div>';}).join('')+'</div>';
+    js='';
+
+  }else if(type==='cta_banner'){
+    var fi=bItems[0]||{title:'Baixe o Guia Gratis',desc:'50.000 motoristas ja baixaram.',icon:'fi-rs-download'};
+    css='.ds-pneugreen-cta{background:'+color+';border-radius:12px;padding:32px;text-align:center;font-family:"Nunito",sans-serif;position:relative;overflow:hidden}.ds-pneugreen-cta::before{content:"";position:absolute;left:-70px;top:-70px;width:180px;height:180px;background:rgba(255,255,255,.07);border-radius:50%}.ds-pneugreen-cta h2{color:#fff;font-size:clamp(17px,3vw,24px);font-weight:900;margin-bottom:7px;position:relative}.ds-pneugreen-cta p{color:rgba(255,255,255,.72);font-size:13px;margin-bottom:18px;line-height:1.7;position:relative}.ds-pneugreen-cta-form{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;position:relative}.ds-pneugreen-cta-form input{flex:1;min-width:170px;padding:10px 13px;border:2px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);border-radius:7px;font-family:"Nunito",sans-serif;font-size:13px;color:#fff;outline:none}.ds-pneugreen-cta-form input::placeholder{color:rgba(255,255,255,.44)}.ds-pneugreen-cta-btn{display:inline-flex;align-items:center;gap:5px;padding:10px 18px;background:#0f0f0f;color:#fff;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}';
+    html='<div class="ds-pneugreen-cta"><div style="font-size:38px;margin-bottom:11px;position:relative;color:rgba(255,255,255,.55)"><i class="fi '+fi.icon+'"></i></div><h2>'+fi.title+'</h2><p>'+fi.desc+'</p><div class="ds-pneugreen-cta-form"><input type="email" placeholder="seu@email.com"/><a href="'+url+'" target="'+target+'" class="ds-pneugreen-cta-btn">'+cta+'</a></div></div>';
+    js='';
+  }
+
+  var preview=document.getElementById('bPreview');
+  if(preview){preview.innerHTML='<style>'+css+'</style>'+html;if(js){try{eval(js);}catch(e){}}}
+  var fullCode='<!-- PneuGreen DS: '+type+' -->\n<style>\n'+css+'\n</style>\n\n'+html+(js?'\n\n<script>\n'+js+'\n<\/script>':'');
+  var codeEl=document.getElementById('bCode');
+  if(codeEl)codeEl.textContent=fullCode;
+  window._bCode=fullCode;
+}
+function bCopy(){var c=window._bCode||'';if(navigator.clipboard)navigator.clipboard.writeText(c).then(function(){showToast('Codigo copiado!');});else{var ta=document.createElement('textarea');ta.value=c;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Codigo copiado!');}}
+bRenderList();bRender();
+
+/* ICONS GALLERY */
+var iconList=['fi-rs-car','fi-rs-car-mechanic','fi-rs-road','fi-rs-gas-pump','fi-rs-wrench','fi-rs-star','fi-rs-heart','fi-rs-check','fi-rs-check-circle','fi-rs-cross-circle','fi-rs-shield-check','fi-rs-lock','fi-rs-key','fi-rs-bell','fi-rs-info','fi-rs-search','fi-rs-filter','fi-rs-list','fi-rs-home','fi-rs-building','fi-rs-map','fi-rs-map-marker','fi-rs-navigation','fi-rs-user','fi-rs-users','fi-rs-envelope','fi-rs-phone','fi-rs-mobile','fi-rs-comment','fi-rs-camera','fi-rs-image','fi-rs-images','fi-rs-picture','fi-rs-calendar','fi-rs-clock','fi-rs-hourglass','fi-rs-shopping-cart','fi-rs-bag','fi-rs-tag','fi-rs-badge','fi-rs-ticket','fi-rs-arrow-right','fi-rs-arrow-left','fi-rs-arrow-up','fi-rs-arrow-down','fi-rs-angle-right','fi-rs-angle-left','fi-rs-angle-up','fi-rs-angle-down','fi-rs-plus','fi-rs-minus','fi-rs-cross','fi-rs-trash','fi-rs-pencil','fi-rs-edit','fi-rs-copy','fi-rs-share','fi-rs-link','fi-rs-external-link','fi-rs-download','fi-rs-upload','fi-rs-cloud','fi-rs-folder','fi-rs-document','fi-rs-settings','fi-rs-sliders','fi-rs-cog','fi-rs-tools','fi-rs-apps','fi-rs-chart-line','fi-rs-chart-bar','fi-rs-chart-pie','fi-rs-stats','fi-rs-trend-up','fi-rs-mountain','fi-rs-tree','fi-rs-leaf','fi-rs-flower','fi-rs-globe','fi-rs-bolt','fi-rs-fire','fi-rs-sun','fi-rs-moon','fi-rs-cloud-rain','fi-rs-trophy','fi-rs-medal','fi-rs-crown','fi-rs-diploma','fi-rs-graduation-cap','fi-rs-book','fi-rs-book-open-cover','fi-rs-newspaper','fi-rs-form','fi-rs-pen','fi-rs-music','fi-rs-headphones','fi-rs-microphone','fi-rs-video','fi-rs-film','fi-rs-wifi','fi-rs-signal','fi-rs-database','fi-rs-server','fi-rs-terminal','fi-rs-grid','fi-rs-table-layout','fi-rs-layout-fluid','fi-rs-layout-sidebar','fi-rs-columns','fi-rs-shield','fi-rs-expand','fi-rs-compress','fi-rs-rotate-right','fi-rs-refresh','fi-rs-paint-brush','fi-rs-palette','fi-rs-eye','fi-rs-eye-crossed','fi-rs-window','fi-rs-screen','fi-rs-desktop','fi-rs-tablet','fi-rs-cursor','fi-rs-hand','fi-rs-paper-plane','fi-rs-piggy-bank','fi-rs-coins','fi-rs-dollar','fi-rs-credit-card','fi-rs-bars-staggered','fi-rs-triangle-warning','fi-rs-question','fi-rs-exclamation','fi-rs-smile','fi-rs-person','fi-rs-road','fi-rs-route'];
+var selIcon='',iconColor='#009933',iconDownloadSize=32;
+
+function setIconColor(hex){
+  iconColor=hex;
+  var picker=document.getElementById('iconColorPicker');
+  var hexIn=document.getElementById('iconColorHex');
+  if(picker)picker.value=hex;
+  if(hexIn)hexIn.value=hex;
+  document.querySelectorAll('[id^="icb-"]').forEach(function(b){b.style.outline='none';b.style.outlineOffset='0';});
+  document.querySelectorAll('[id^="icb-"]').forEach(function(b){if(b.title.toLowerCase()===hex.toLowerCase()){b.style.outline='2px solid var(--cfd)';b.style.outlineOffset='2px';}});
+  renderIcons(document.getElementById('iconSearch')?document.getElementById('iconSearch').value:'');
+  updateIconPanelColor();
+}
+
+function onHexInput(val){
+  if(/^#[0-9a-fA-F]{6}$/.test(val)){iconColor=val;var p=document.getElementById('iconColorPicker');if(p)p.value=val;renderIcons(document.getElementById('iconSearch')?document.getElementById('iconSearch').value:'');updateIconPanelColor();}
+}
+
+function setIconSize(sz,btn){
+  iconDownloadSize=sz;
+  document.querySelectorAll('.icon-size-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  var info=document.getElementById('iconDlInfo');
+  if(info)info.textContent=sz+' x '+sz+' px';
+}
+
+function updateIconPanelColor(){
+  if(!selIcon)return;
+  var big=document.getElementById('iconPreviewBig');
+  if(big)big.innerHTML='<i class="fi '+selIcon+'" style="font-size:72px;color:'+iconColor+'"></i>';
+  ['16','24','32','48'].forEach(function(s){var el=document.getElementById('iconP'+s);if(el)el.innerHTML='<i class="fi '+selIcon+'" style="font-size:'+s+'px;color:'+iconColor+'"></i>';});
+}
+
+function renderIcons(q){
+  var grid=document.getElementById('iconsGrid');
+  if(!grid)return;
+  grid.innerHTML='';
+  var f=q?q.toLowerCase():'';
+  var list=f?iconList.filter(function(i){return i.replace('fi-rs-','').includes(f);}):iconList;
+  list.forEach(function(icon){
+    var c=document.createElement('div');
+    c.className='icon-card'+(icon===selIcon?' selected':'');
+    c.innerHTML='<i class="fi '+icon+'" style="color:'+iconColor+';font-size:22px"></i><span>'+icon.replace('fi-rs-','')+'</span>';
+    c.addEventListener('click',function(){selectIcon(icon);});
+    grid.appendChild(c);
+  });
+}
+
+function selectIcon(icon){
+  selIcon=icon;
+  var panel=document.getElementById('iconPanel');
+  var code=document.getElementById('iconSelCode');
+  if(!panel||!code)return;
+  panel.style.display='block';
+  code.textContent='<i class="fi '+icon+'"></i>';
+  updateIconPanelColor();
+  document.querySelectorAll('.icon-card').forEach(function(c){
+    var i=c.querySelector('i');
+    c.classList.toggle('selected', i?i.className.indexOf(icon)>-1:false);
+  });
+}
+
+function filterIcons(){renderIcons(document.getElementById('iconSearch').value);}
+
+function copyIconHtml(){
+  if(!selIcon)return;
+  var h='<i class="fi '+selIcon+'"></i>';
+  if(navigator.clipboard)navigator.clipboard.writeText(h).then(function(){showToast('HTML copiado!');});
+  else{var ta=document.createElement('textarea');ta.value=h;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('HTML copiado!');}
+}
+
+/* PNG: render at exact target size using font-based canvas */
+function downloadIconPng(){
+  if(!selIcon)return;
+  var sz=iconDownloadSize;
+  var canvas=document.createElement('canvas');
+  canvas.width=sz;canvas.height=sz;
+  var ctx=canvas.getContext('2d');
+  // Probe font info from a temp DOM element
+  var probe=document.createElement('span');
+  probe.className='fi '+selIcon;
+  probe.style.cssText='font-size:'+sz+'px;color:'+iconColor+';position:fixed;left:-99999px;top:-99999px;visibility:hidden;';
+  document.body.appendChild(probe);
+  var cs=window.getComputedStyle(probe,'::before');
+  var glyph=cs.content.replace(/["']/g,'');
+  var ff=cs.fontFamily||'uicons-regular-straight';
+  document.body.removeChild(probe);
+  ctx.clearRect(0,0,sz,sz);
+  ctx.font=sz+'px '+ff;
+  ctx.fillStyle=iconColor;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  if(glyph&&glyph.length>0&&glyph!=='none'&&glyph!=='""'){
+    ctx.fillText(glyph,sz/2,sz/2);
+  } else {
+    // Fallback: draw a simple placeholder rectangle
+    ctx.fillStyle='rgba(0,0,0,.1)';
+    ctx.fillRect(0,0,sz,sz);
+    ctx.fillStyle=iconColor;
+    ctx.font='bold '+(sz*0.3)+'px sans-serif';
+    ctx.fillText(selIcon.replace('fi-rs-','').substring(0,3).toUpperCase(),sz/2,sz/2);
+  }
+  var a=document.createElement('a');
+  a.download=selIcon+'-'+sz+'px.png';
+  a.href=canvas.toDataURL('image/png');
+  a.click();
+  showToast('PNG '+sz+'x'+sz+' baixado!');
+}
+
+/* SVG: produces a clean annotated SVG referencing the icon class */
+function downloadIconSvg(){
+  if(!selIcon)return;
+  var sz=iconDownloadSize;
+  var fs=Math.round(sz*0.65);
+  var pad=Math.round((sz-fs)/2);
+  var svg=[
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 '+sz+' '+sz+'" width="'+sz+'" height="'+sz+'">',
+    '  <!-- PneuGreen Design System | Icon: '+selIcon+' | Color: '+iconColor+' | Size: '+sz+'px -->',
+    '  <!-- Usage: <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css"/> -->',
+    '  <!-- HTML: <i class="fi '+selIcon+'" style="color:'+iconColor+';font-size:'+fs+'px"></i> -->',
+    '  <defs>',
+    '    <style>',
+    '      @import url("https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css");',
+    '      .icon-glyph { font-family: uicons-regular-straight; font-style: normal; font-size: '+fs+'px; fill: '+iconColor+'; }',
+    '    </style>',
+    '  </defs>',
+    '  <foreignObject x="0" y="0" width="'+sz+'" height="'+sz+'">',
+    '    <div xmlns="http://www.w3.org/1999/xhtml" style="width:'+sz+'px;height:'+sz+'px;display:flex;align-items:center;justify-content:center;">',
+    '      <i class="fi '+selIcon+'" style="color:'+iconColor+';font-size:'+fs+'px;line-height:1;"></i>',
+    '    </div>',
+    '  </foreignObject>',
+    '</svg>'
+  ].join('\n');
+  var blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.download=selIcon+'-'+sz+'px.svg';
+  a.href=url;
+  a.click();
+  setTimeout(function(){URL.revokeObjectURL(url);},1000);
+  showToast('SVG '+sz+'x'+sz+' baixado!');
+}
+
+setIconColor('#009933');
+renderIcons();
+
+/* TEMPLATES */
+function showTmpl(btn,id){
+  document.querySelectorAll('.template-tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.template-content').forEach(function(c){c.classList.remove('active');});
+  btn.classList.add('active');
+  var t=document.getElementById(id);if(t)t.classList.add('active');
+}
+function copyTmpl(id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var h=el.outerHTML;
+  if(navigator.clipboard)navigator.clipboard.writeText(h).then(function(){showToast('Template copiado!');});
+  else{var ta=document.createElement('textarea');ta.value=h;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Template copiado!');}
+}
+</script>
+</body>
+</html>
